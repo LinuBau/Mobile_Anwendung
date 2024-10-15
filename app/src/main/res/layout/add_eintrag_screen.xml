@@ -1,0 +1,45 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Textfeld 1 -->
+    <EditText
+        android:id="@+id/textField1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textfeld_1"
+        android:paddingTop="15dp"
+        />
+
+    <!-- Textfeld 2 -->
+    <EditText
+        android:id="@+id/textField2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Textfeld 2"
+        android:paddingTop="15dp"
+        />
+
+    <!-- Textfeld für Zahlen -->
+    <EditText
+        android:id="@+id/numberField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nur Zahlen"
+        android:inputType="number"
+        android:paddingTop="15dp"
+
+        tools:ignore="HardcodedText" />
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hinzufügen"
+        android:layout_marginTop="15dp"
+        android:textSize="19dp"
+    />
+</LinearLayout>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TestApi</string>
+    <string name="textfeld_1">Textfeld 1</string>
 </resources>

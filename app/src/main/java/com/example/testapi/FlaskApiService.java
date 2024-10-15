@@ -12,4 +12,10 @@ public interface FlaskApiService {
     Call<List<SchwazesBrettAnzeige>> getJsonList();
     @POST("/json")
     Call<SchwazesBrettAnzeige> addJsonObject(@Body SchwazesBrettAnzeige schwazesBrettAnzeige);
+    @GET("/getUserId")
+    Call<SchwazesBrettAnzeige> getUserID();
+    @POST("/getUserId")
+    Call<Integer> addUserID(@Body Integer userid);
 }
+
+
