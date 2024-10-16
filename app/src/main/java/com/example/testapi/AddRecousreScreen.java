@@ -18,7 +18,7 @@ public class AddRecousreScreen extends AppCompatActivity {
     private  ApiHandler  apiHandler = null;
     private EditText flied1;
     private EditText flied2;
-    private EditText userid;
+
 
 
     @Override
@@ -28,18 +28,16 @@ public class AddRecousreScreen extends AppCompatActivity {
         Button button = findViewById(R.id.addButton);
         flied1 = findViewById(R.id.textField1);
         flied2 = findViewById(R.id.textField2);
-        userid = findViewById(R.id.numberField);
         createApiHandler();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if(flied1.getText().toString().isEmpty()||flied2.getText().toString().isEmpty()||userid.getText().toString().isEmpty()){
+            if(flied1.getText().toString().isEmpty()||flied2.getText().toString().isEmpty()){
                 Toast.makeText(AddRecousreScreen.this, "Please enter both the values", Toast.LENGTH_SHORT).show();
             }else {
-                int id = Integer.parseInt(userid.getText().toString());
                 String titel = flied1.getText().toString();
                 String beschreibung = flied2.getText().toString();
-                postData(titel,beschreibung,id);
+                postData(titel,beschreibung,MainActivity.userid);
             }
             }
         });

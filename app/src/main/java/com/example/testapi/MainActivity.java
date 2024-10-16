@@ -18,14 +18,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    public static int userid;
+    public static int userid = 9999;
     private ApiHandler apiHandler = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Random random = new Random();
-         Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://10.0.2.2:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         apiHandler = new ApiHandler(this,apiService,recyclerView);
         apiHandler.fetchJsonList();
+        apiHandler.setOrValidUserId();
         Button button = findViewById(R.id.plusButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,4 +44,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    
 }

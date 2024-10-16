@@ -86,6 +86,48 @@ public class ApiHandler  {
         });
 
     }
+    public  void setOrValidUserId(){
+        if (MainActivity.userid == 9999){
+            Call<SchwazesBrettAnzeige> call = apiService.getUserID();
+            call.enqueue(new Callback<SchwazesBrettAnzeige>() {
+                @Override
+                public void onResponse(Call<SchwazesBrettAnzeige> call, Response<SchwazesBrettAnzeige> response) {
+                    if(response.isSuccessful()){
+                        SchwazesBrettAnzeige temp = response.body();
+                        MainActivity.userid = temp.getErstellerId();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SchwazesBrettAnzeige> call, Throwable t) {
+                    MainActivity.userid = 9999;
+                    Log.e("Retrofit Fehler", "Fehler beim Abrufen der UserID: " + t.getMessage());
+                    Toast.makeText(parent, "UsserID könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            Call<Integer> call = apiService.addUserID(MainActivity.userid);
+            call.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.isSuccessful()){
+                        Integer handshake = response.body();
+                        if (handshake != MainActivity.userid){
+                            MainActivity.userid = handshake;
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    MainActivity.userid = 9999;
+                    Log.e("Retrofit Fehler", "Fehler beim Abrufen der UserID: " + t.getMessage());
+                    Toast.makeText(parent, "UsserID könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 
 
 }

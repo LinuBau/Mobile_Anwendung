@@ -24,16 +24,7 @@
         android:paddingTop="15dp"
         />
 
-    <!-- Textfeld für Zahlen -->
-    <EditText
-        android:id="@+id/numberField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nur Zahlen"
-        android:inputType="number"
-        android:paddingTop="15dp"
 
-        tools:ignore="HardcodedText" />
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
