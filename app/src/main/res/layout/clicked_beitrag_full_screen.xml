@@ -1,10 +1,10 @@
-^<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!--
     <ImageView
         android:id="@+id/erstellerBild"
         android:layout_width="20dp"
@@ -17,22 +17,25 @@
         android:textSize="20dp"
         android:text="User"
         />
+        -->
     <TextView
         android:id="@+id/beitagName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/erstellerBild"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:text="TextView"
         android:textStyle="bold"
         android:textSize="25dp"
+        android:textColor="#000000"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
     <TextView
         android:id="@+id/beitagInhalt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below = "@id/beitagName"
+        android:layout_height="50dp"
+        android:layout_below = "@+id/beitagName"
         android:layout_marginTop="15dp"
+        android:textColor="#000000"
         />
 </RelativeLayout>

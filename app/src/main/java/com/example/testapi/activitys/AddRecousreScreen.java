@@ -1,21 +1,30 @@
-package com.example.testapi;
+package com.example.testapi.activitys;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.testapi.apistuff.ApiHandler;
+import com.example.testapi.apistuff.FlaskApiService;
+import com.example.testapi.R;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddRecousreScreen extends AppCompatActivity {
-    private  ApiHandler  apiHandler = null;
+public class AddRecousreScreen extends ActivityClickable {
+    private ApiHandler apiHandler = null;
+    private Button boldButton;
     private EditText flied1;
     private EditText flied2;
 
@@ -28,7 +37,27 @@ public class AddRecousreScreen extends AppCompatActivity {
         Button button = findViewById(R.id.addButton);
         flied1 = findViewById(R.id.textField1);
         flied2 = findViewById(R.id.textField2);
+        boldButton = findViewById(R.id.boldText);
         createApiHandler();
+        boldButton.setEnabled(false);
+        flied2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int selectionStart = flied2.getSelectionStart();
+                int selectionEnd = flied2.getSelectionEnd();
+                boldButton.setEnabled(selectionStart != selectionEnd);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,6 +68,17 @@ public class AddRecousreScreen extends AppCompatActivity {
                 String beschreibung = flied2.getText().toString();
                 postData(titel,beschreibung,MainActivity.userid);
             }
+            }
+        });
+        boldButton.setOnClickListener(view -> {
+            int start = flied2.getSelectionStart();
+            int end = flied2.getSelectionEnd();
+
+            if (start != end) {
+                SpannableString spannableString = new SpannableString(flied2.getText());
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                flied2.setText(spannableString);
+                flied2.setSelection(start, end);
             }
         });
     }

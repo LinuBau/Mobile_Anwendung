@@ -14,6 +14,15 @@
         android:hint="@string/textfeld_1"
         android:paddingTop="15dp"
         />
+    <Button
+        android:id="@+id/boldText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textField1"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:text="Bold"
+        />
 
     <!-- Textfeld 2 -->
     <EditText

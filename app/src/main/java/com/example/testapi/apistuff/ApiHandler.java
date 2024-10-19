@@ -1,33 +1,33 @@
-package com.example.testapi;
+package com.example.testapi.apistuff;
 
-import android.util.AndroidException;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
+import com.example.testapi.dataobjects.Notice;
+import com.example.testapi.layoutuse.NoticeListApdatar;
+import com.example.testapi.activitys.ActivityClickable;
+import com.example.testapi.activitys.MainActivity;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiHandler  {
-    private AppCompatActivity parent;
+    private ActivityClickable parent;
     private  FlaskApiService apiService;
     private  RecyclerView recyclerView;
 
-    public ApiHandler(AppCompatActivity parent, FlaskApiService apiService, RecyclerView recyclerView) {
+    public ApiHandler(ActivityClickable parent, FlaskApiService apiService, RecyclerView recyclerView) {
         this.parent = parent;
         this.apiService = apiService;
         this.recyclerView = recyclerView;
     }
-    public ApiHandler(AppCompatActivity parent,FlaskApiService apiService){
+    public ApiHandler(ActivityClickable parent, FlaskApiService apiService){
         this.parent = parent;
         this.apiService = apiService;
     }
@@ -36,7 +36,7 @@ public class ApiHandler  {
         if (parent == null || recyclerView == null){
             return;
         }
-    Call<List<SchwazesBrettAnzeige>> call = null;
+    Call<List<Notice>> call = null;
     try{
          call = apiService.getJsonList();
         Log.d("Retrofit", "Request URL: " + call.request().url());
@@ -45,18 +45,19 @@ public class ApiHandler  {
         Log.e("Fehler bei Call","Einfehler aufgetrenten" + e.getMessage());
     }
     try {
-        call.enqueue(new Callback<List<SchwazesBrettAnzeige>>() {
+        call.enqueue(new Callback<List<Notice>>() {
             @Override
-            public void onResponse(Call<List<SchwazesBrettAnzeige>> call, Response<List<SchwazesBrettAnzeige>> response) {
+            public void onResponse(Call<List<Notice>> call, Response<List<Notice>> response) {
                 if(response.isSuccessful()){
-                  List<SchwazesBrettAnzeige>  jsonList = response.body();
-                    Log.d("Lenght of Array", "onResponse: "+jsonList.size());
-                  recyclerView.setAdapter(new MyApdatar(parent.getApplicationContext(),new ArrayList<>(jsonList)));
+                  List<Notice>  jsonList = response.body();
+                  Log.d("Lenght of Array", "onResponse: "+jsonList.size());
+                  recyclerView.setAdapter(new NoticeListApdatar(parent.getApplicationContext(),new ArrayList<>(jsonList),parent));
+                    MainActivity.notices = new  ArrayList<>(jsonList);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<SchwazesBrettAnzeige>> call, Throwable t) {
+            public void onFailure(Call<List<Notice>> call, Throwable t) {
                 Log.e("Retrofit Fehler", "Fehler beim Abrufen der Daten: " + t.getMessage());
                 Toast.makeText(parent, "Fehler beim Abrufen der Daten", Toast.LENGTH_SHORT).show();
             }
@@ -68,7 +69,7 @@ public class ApiHandler  {
 
 }
     public void addJsonList(String titel,String beschreibung,int userid){
-        SchwazesBrettAnzeige newAnzeige = new SchwazesBrettAnzeige(beschreibung,titel,userid);
+        Notice newAnzeige = new Notice(beschreibung,titel,userid);
         Call call = apiService.addJsonObject(newAnzeige);
         call.enqueue(new Callback() {
             @Override
@@ -88,18 +89,18 @@ public class ApiHandler  {
     }
     public  void setOrValidUserId(){
         if (MainActivity.userid == 9999){
-            Call<SchwazesBrettAnzeige> call = apiService.getUserID();
-            call.enqueue(new Callback<SchwazesBrettAnzeige>() {
+            Call<Notice> call = apiService.getUserID();
+            call.enqueue(new Callback<Notice>() {
                 @Override
-                public void onResponse(Call<SchwazesBrettAnzeige> call, Response<SchwazesBrettAnzeige> response) {
+                public void onResponse(Call<Notice> call, Response<Notice> response) {
                     if(response.isSuccessful()){
-                        SchwazesBrettAnzeige temp = response.body();
+                        Notice temp = response.body();
                         MainActivity.userid = temp.getErstellerId();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<SchwazesBrettAnzeige> call, Throwable t) {
+                public void onFailure(Call<Notice> call, Throwable t) {
                     MainActivity.userid = 9999;
                     Log.e("Retrofit Fehler", "Fehler beim Abrufen der UserID: " + t.getMessage());
                     Toast.makeText(parent, "UsserID könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();

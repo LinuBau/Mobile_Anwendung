@@ -1,25 +1,30 @@
-package com.example.testapi;
+package com.example.testapi.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testapi.apistuff.ApiHandler;
+import com.example.testapi.apistuff.FlaskApiService;
+import com.example.testapi.R;
+import com.example.testapi.dataobjects.Notice;
+
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ActivityClickable {
     public static int userid = 9999;
     private ApiHandler apiHandler = null;
+    public  static ArrayList<Notice> notices = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,5 +49,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(MainActivity.this,ClickedNotice.class);
+        intent.putExtra("notice",MainActivity.notices.get(position));
+        Log.d("Onclick", "onItemClick() called with: position = [" + position + MainActivity.notices.get(position).toString()+"]");
+        startActivity(intent);
+    }
 }

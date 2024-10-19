@@ -1,4 +1,6 @@
-package com.example.testapi;
+package com.example.testapi.apistuff;
+
+import com.example.testapi.dataobjects.Notice;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -9,11 +11,11 @@ import java.util.List;
 
 public interface FlaskApiService {
     @GET("/json")
-    Call<List<SchwazesBrettAnzeige>> getJsonList();
+    Call<List<Notice>> getJsonList();
     @POST("/json")
-    Call<SchwazesBrettAnzeige> addJsonObject(@Body SchwazesBrettAnzeige schwazesBrettAnzeige);
+    Call<Notice> addJsonObject(@Body Notice notice);
     @GET("/getUserId")
-    Call<SchwazesBrettAnzeige> getUserID();
+    Call<Notice> getUserID();
     @POST("/getUserId")
     Call<Integer> addUserID(@Body Integer userid);
 }
