@@ -2,10 +2,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hinzufügen"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="end"
+        android:textSize="19dp"
+        />
     <!-- Textfeld 1 -->
     <EditText
         android:id="@+id/textField1"
@@ -13,15 +23,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/textfeld_1"
         android:paddingTop="15dp"
-        />
-    <Button
-        android:id="@+id/boldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textField1"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold"
-        android:text="Bold"
         />
 
     <!-- Textfeld 2 -->
@@ -31,15 +32,14 @@
         android:layout_height="wrap_content"
         android:hint="Textfeld 2"
         android:paddingTop="15dp"
+        android:layout_weight="1"
         />
 
-
     <Button
-        android:id="@+id/addButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hinzufügen"
-        android:layout_marginTop="15dp"
-        android:textSize="19dp"
-    />
+        android:id="@+id/boldText"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginBottom="15dp"
+        android:text="Bold"
+        android:textStyle="bold" />
 </LinearLayout>

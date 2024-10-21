@@ -39,25 +39,7 @@ public class AddRecousreScreen extends ActivityClickable {
         flied2 = findViewById(R.id.textField2);
         boldButton = findViewById(R.id.boldText);
         createApiHandler();
-        boldButton.setEnabled(false);
-        flied2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int selectionStart = flied2.getSelectionStart();
-                int selectionEnd = flied2.getSelectionEnd();
-                boldButton.setEnabled(selectionStart != selectionEnd);
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +55,12 @@ public class AddRecousreScreen extends ActivityClickable {
         boldButton.setOnClickListener(view -> {
             int start = flied2.getSelectionStart();
             int end = flied2.getSelectionEnd();
+            if (start > end) {
+
+                int temp = start;
+                start = end;
+                end = temp;
+            }
 
             if (start != end) {
                 SpannableString spannableString = new SpannableString(flied2.getText());

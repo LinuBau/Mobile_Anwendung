@@ -1,5 +1,6 @@
 package com.example.testapi.apistuff;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -96,6 +97,7 @@ public class ApiHandler  {
                     if(response.isSuccessful()){
                         Notice temp = response.body();
                         MainActivity.userid = temp.getErstellerId();
+
                     }
                 }
 
