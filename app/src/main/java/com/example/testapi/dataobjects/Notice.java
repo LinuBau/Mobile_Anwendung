@@ -3,10 +3,16 @@ package com.example.testapi.dataobjects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
+import kotlin.Pair;
+
 public class Notice implements Parcelable {
     private String AnzeigeName;
     private String Beschreibung;
     private int erstellerId;
+    ArrayList<Pair<Integer,Integer>> boldIndex;
+
 
     @Override
     public String toString() {
