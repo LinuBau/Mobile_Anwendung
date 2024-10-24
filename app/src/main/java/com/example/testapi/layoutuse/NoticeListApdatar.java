@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
 
@@ -33,6 +35,34 @@ public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
     public void onBindViewHolder(@NonNull NoticeViewHolder holder, int position) {
         holder.titelView.setText(mylist.get(position).getAnzeigeName());
         holder.beschreibungView.setText(mylist.get(position).getBeschreibung());
+    }
+    public void updateData(List<Notice> newItems) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+               return mylist.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newItems.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldPos, int newPos) {
+                return mylist.get(oldPos).getErstellerId() == newItems.get(newPos).getErstellerId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldPos, int newPos) {
+                Notice oldItem = mylist.get(oldPos);
+                Notice newItem = newItems.get(newPos);
+                return oldItem.equals(newItem);
+            }
+        });
+
+        mylist = new ArrayList<>(newItems);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override
