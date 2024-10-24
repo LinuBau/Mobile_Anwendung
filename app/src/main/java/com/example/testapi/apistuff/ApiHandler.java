@@ -131,6 +131,43 @@ public class ApiHandler  {
         }
 
     }
+    public void fetchJsonList(int mode){
+        if (parent == null || recyclerView == null){
+            return;
+        }
+        Call<List<Notice>> call = null;
+        try{
+            call = apiService.getJsonList();
+            Log.d("Retrofit", "Request URL: " + call.request().url());
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.e("Fehler bei Call","Einfehler aufgetrenten" + e.getMessage());
+        }
+        try {
+            call.enqueue(new Callback<List<Notice>>() {
+                @Override
+                public void onResponse(Call<List<Notice>> call, Response<List<Notice>> response) {
+                    if(response.isSuccessful()){
+                        List<Notice>  jsonList = response.body();
+                        if (mode == 2){
+                            NoticeListApdatar apdatar = (NoticeListApdatar) recyclerView.getAdapter();
+                            apdatar.updateData(jsonList);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Notice>> call, Throwable t) {
+                    Log.e("Retrofit Fehler", "Fehler beim Abrufen der Daten: " + t.getMessage());
+                    Toast.makeText(parent, "Fehler beim Abrufen der Daten", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("Fehler bei Call","Einfehler aufgetrenten" + e.getMessage());
+        }
+
+    }
 
 
 }
