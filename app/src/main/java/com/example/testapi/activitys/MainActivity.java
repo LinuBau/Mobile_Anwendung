@@ -38,7 +38,7 @@ public class MainActivity extends ActivityClickable {
         RecyclerView recyclerView = findViewById(R.id.FristList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         apiHandler = new ApiHandler(this,apiService,recyclerView);
-        apiHandler.fetchJsonList();
+        apiHandler.fetchJsonList(1);
         apiHandler.setOrValidUserId();
         Button button = findViewById(R.id.plusButton);
         button.setOnClickListener(new View.OnClickListener() {
