@@ -5,29 +5,25 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 import com.example.testapi.apistuff.ApiHandler;
-import com.example.testapi.apistuff.FlaskApiService;
 import com.example.testapi.R;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class AddRecousreScreen extends ActivityClickable {
+public class AddResourceFragment extends FragmentClickable {
     private ApiHandler apiHandler = null;
+    View view;
     private Button boldButton;
     private EditText flied1;
     private EditText flied2;
@@ -35,28 +31,29 @@ public class AddRecousreScreen extends ActivityClickable {
     private RelativeSizeSpan span;
     private SpannableString spannable;
     private int previousTextLength = 0;
-
+    MainActivity parent ;
 
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_eintrag_screen);
-        Button button = findViewById(R.id.addButton);
-        flied1 = findViewById(R.id.textField1);
-        flied2 = findViewById(R.id.textField2);
-        boldButton = findViewById(R.id.boldText);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView( inflater,container,savedInstanceState);
+        parent = (MainActivity) requireActivity();
+        view = inflater.inflate(R.layout.add_eintrag_screen, container, false);
+        Button button = view.findViewById(R.id.addButton);
+        flied1 = view.findViewById(R.id.textField1);
+        flied2 = view.findViewById(R.id.textField2);
+        boldButton = view.findViewById(R.id.boldText);
         createApiHandler();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             if(flied1.getText().toString().isEmpty()||flied2.getText().toString().isEmpty()){
-                Toast.makeText(AddRecousreScreen.this, "Please enter both the values", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent.getApplicationContext(), "Please enter both the values", Toast.LENGTH_SHORT).show();
             }else {
                 String titel = flied1.getText().toString();
-                String beschreibung = flied2.getText().toString();
-                postData(titel,beschreibung,MainActivity.userid);
+                Spannable beschreibung = flied2.getText();
+                postData(titel,beschreibung, MainActivity.userid);
             }
             }
         });
@@ -120,16 +117,12 @@ public class AddRecousreScreen extends ActivityClickable {
 
             }
         });
+        return  view;
     }
-    private   void postData(String titel,String beschreibung ,int userid){
-        apiHandler.addJsonList(titel,beschreibung,userid);
+    private   void postData(String titel,Spannable beschreibung ,int userid){
+        apiHandler.addJsonList(titel, Html.toHtml(beschreibung,Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE),userid);
     }
     private  void  createApiHandler(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://10.0.2.2:5000")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        FlaskApiService apiService = retrofit.create(FlaskApiService.class);
-        apiHandler = new ApiHandler(this,apiService);
+        apiHandler = ((MainActivity) requireActivity()).getApiHandler();
     }
 }

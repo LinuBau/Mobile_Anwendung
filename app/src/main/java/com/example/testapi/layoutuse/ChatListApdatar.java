@@ -13,15 +13,14 @@ import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
+public class ChatListApdatar extends RecyclerView.Adapter<ChatViewHolder> {
 
     Context context;
-    ArrayList<Notice>  mylist;
+    ArrayList<Integer> mylist;
     private  final   ItemViewInterface viewInterface;
-    public NoticeListApdatar(Context context, ArrayList<Notice> mylist,ItemViewInterface viewInterfac) {
+    public ChatListApdatar(Context context, ArrayList<Integer> mylist,ItemViewInterface viewInterfac) {
         this.context = context;
         this.mylist = mylist;
         this.viewInterface = viewInterfac;
@@ -29,20 +28,20 @@ public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
 
     @NonNull
     @Override
-    public NoticeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new NoticeViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item,parent,false),viewInterface);
+    public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ChatViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item,parent,false),viewInterface);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoticeViewHolder holder, int position) {
-        holder.titelView.setText(mylist.get(position).getAnzeigeName());
-        holder.beschreibungView.setText(Html.fromHtml(mylist.get(position).getBeschreibung(), Html.FROM_HTML_MODE_LEGACY));
+    public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
+        holder.chat_item_View.setText(mylist.get(position).toString());
     }
-    public void updateData(List<Notice> newItems) {
+
+    public void updateData(List<Integer> newItems) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
-               return mylist.size();
+                return mylist.size();
             }
 
             @Override
@@ -52,13 +51,13 @@ public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
 
             @Override
             public boolean areItemsTheSame(int oldPos, int newPos) {
-                return mylist.get(oldPos).getErstellerId() == newItems.get(newPos).getErstellerId();
+                return mylist.get(oldPos).intValue() == newItems.get(newPos).intValue();
             }
 
             @Override
             public boolean areContentsTheSame(int oldPos, int newPos) {
-                Notice oldItem = mylist.get(oldPos);
-                Notice newItem = newItems.get(newPos);
+                Integer oldItem = mylist.get(oldPos);
+                Integer newItem = newItems.get(newPos);
                 return oldItem.equals(newItem);
             }
         });

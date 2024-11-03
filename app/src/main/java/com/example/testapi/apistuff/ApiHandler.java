@@ -1,15 +1,16 @@
 package com.example.testapi.apistuff;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testapi.dataobjects.Notice;
-import com.example.testapi.layoutuse.NoticeListApdatar;
-import com.example.testapi.activitys.ActivityClickable;
+import com.example.testapi.activitys.AppCompatActivitySafe;
 import com.example.testapi.activitys.MainActivity;
+import com.example.testapi.dataobjects.Notice;
+import com.example.testapi.layoutuse.ChatListApdatar;
+import com.example.testapi.layoutuse.ItemViewInterface;
+import com.example.testapi.layoutuse.NoticeListApdatar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,22 +20,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiHandler  {
-    private ActivityClickable parent;
+    private AppCompatActivitySafe parent;
     private  FlaskApiService apiService;
-    private  RecyclerView recyclerView;
+    private  RecyclerView recyclerListView;
+    private RecyclerView recyclerChatView ;
+    private  ItemViewInterface chatInterface;
+    private ItemViewInterface itemViewInterface;
+    public  static  final int CREATE_RECYLERVIEW = 1;
+    public  static  final int UPDATE_RECYLERVIEW = 2;
 
-    public ApiHandler(ActivityClickable parent, FlaskApiService apiService, RecyclerView recyclerView) {
+    public ApiHandler(AppCompatActivitySafe parent, FlaskApiService apiService, RecyclerView recyclerListView) {
         this.parent = parent;
         this.apiService = apiService;
-        this.recyclerView = recyclerView;
+        this.recyclerListView = recyclerListView;
     }
-    public ApiHandler(ActivityClickable parent, FlaskApiService apiService){
+    public ApiHandler(AppCompatActivitySafe parent, FlaskApiService apiService){
         this.parent = parent;
         this.apiService = apiService;
     }
 
     public  void fetchJsonList(int mode){
-        if (parent == null || recyclerView == null){
+        if (parent == null || recyclerListView == null){
             return;
         }
     Call<List<Notice>> call = null;
@@ -50,16 +56,29 @@ public class ApiHandler  {
             @Override
             public void onResponse(Call<List<Notice>> call, Response<List<Notice>> response) {
                 if(response.isSuccessful()){
-                    List<Notice>  jsonList = response.body();
+                    List<Notice>  tjsonList = response.body();
+                    ArrayList<Notice> jsonList = new ArrayList<>(tjsonList);
+                    jsonList.sort(Notice.NoticeDescendingTime);
                     switch (mode){
                         case 1:
-                            Log.d("Lenght of Array", "onResponse: "+jsonList.size());
-                            recyclerView.setAdapter(new NoticeListApdatar(parent.getApplicationContext(),new ArrayList<>(jsonList),parent));
-                            MainActivity.notices = new  ArrayList<>(jsonList);
+                            if (recyclerListView != null){
+                                recyclerListView.setAdapter(new NoticeListApdatar(parent.getApplicationContext(),new ArrayList<>(jsonList),itemViewInterface));
+                                MainActivity.notices = new  ArrayList<>(jsonList);
+                            }
                         break;
                         case 2:
-                            NoticeListApdatar apdatar = (NoticeListApdatar) recyclerView.getAdapter();
-                            apdatar.updateData(jsonList);
+                            if (recyclerListView != null) {
+                                parent.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NoticeListApdatar apdatar = (NoticeListApdatar) recyclerListView.getAdapter();
+                                        MainActivity.notices = new ArrayList<>(jsonList);
+                                        assert apdatar != null;
+                                        apdatar.updateData(jsonList);
+                                    }
+                                });
+                            }
+
                         break;
                         default:
                             Toast.makeText(parent, "Mode beim Api Handling nicht vorhanden", Toast.LENGTH_SHORT).show();
@@ -81,7 +100,7 @@ public class ApiHandler  {
 
 }
     public void addJsonList(String titel,String beschreibung,int userid){
-        Notice newAnzeige = new Notice(beschreibung,titel,userid);
+        Notice newAnzeige = new Notice(beschreibung,titel,userid,0);
         Call call = apiService.addJsonObject(newAnzeige);
         call.enqueue(new Callback() {
             @Override
@@ -108,13 +127,14 @@ public class ApiHandler  {
                     if(response.isSuccessful()){
                         Notice temp = response.body();
                         MainActivity.userid = temp.getErstellerId();
-
+                        parent.safeUserID();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Notice> call, Throwable t) {
                     MainActivity.userid = 9999;
+                    parent.safeUserID();
                     Log.e("Retrofit Fehler", "Fehler beim Abrufen der UserID: " + t.getMessage());
                     Toast.makeText(parent, "UsserID könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
                 }
@@ -128,6 +148,7 @@ public class ApiHandler  {
                         Integer handshake = response.body();
                         if (handshake != MainActivity.userid){
                             MainActivity.userid = handshake;
+                            parent.safeUserID();
                         }
                     }
                 }
@@ -135,12 +156,45 @@ public class ApiHandler  {
                 @Override
                 public void onFailure(Call<Integer> call, Throwable t) {
                     MainActivity.userid = 9999;
+                    parent.safeUserID();
                     Log.e("Retrofit Fehler", "Fehler beim Abrufen der UserID: " + t.getMessage());
                     Toast.makeText(parent, "UsserID könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
+    }
+    public void fetchChatKey(){
+        Call<List<Integer>> call = apiService.getChatKeys(MainActivity.userid);
+        call.enqueue(new Callback<List<Integer>>() {
+            @Override
+            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+                if (response.isSuccessful()){
+                    List<Integer> keyList = response.body();
+                    MainActivity.chatsKeys = new ArrayList<>(keyList);
+                    recyclerChatView.setAdapter(new ChatListApdatar(parent.getApplicationContext(),MainActivity.chatsKeys,chatInterface));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Integer>> call, Throwable t) {
+                Log.e("Retrofit Fehler", "Fehler beim Abrufen der ChatKeys: " + t.getMessage());
+                Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    public  void setRecyclerListView(RecyclerView rv){
+        this.recyclerListView = rv ;
+    }
+    public void setItemViewInterface(ItemViewInterface ivt){
+        this.itemViewInterface = ivt;
+    }
+    public  void setRecyclerChatView(RecyclerView rv){
+        this.recyclerChatView = rv ;
+    }
+    public void setItemChatInterface(ItemViewInterface ivt){
+        this.chatInterface = ivt;
     }
 
 
