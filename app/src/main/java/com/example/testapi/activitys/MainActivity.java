@@ -3,6 +3,7 @@ package com.example.testapi.activitys;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager2.widget.ViewPager2;
+
 
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivitySafe {
     private Handler handler;
     private UserDataManager userDataManager;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static final long REFRESH_INTERVAL = 60000; // 1 Minute in Millisekunden
+    private static final long REFRESH_INTERVAL = 60000;
+    private ArrayList<String> tags ;
 
     private final Runnable refreshRunnable = new Runnable() {
         @Override
@@ -133,6 +135,16 @@ public class MainActivity extends AppCompatActivitySafe {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    public void replaceFragment(Fragment fragment, ArrayList<Parcelable> list){
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("ListaData",list);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer,fragment)
                 .addToBackStack(null)
                 .commit();
     }

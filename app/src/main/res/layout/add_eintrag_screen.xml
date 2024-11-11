@@ -1,46 +1,87 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
-
+    <!-- "Hinzufügen" Button -->
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hinzufügen"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="end"
-        android:textSize="19dp"
-        />
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp" />
+
+    <!-- Kontaktinformationen -->
+    <EditText
+        android:id="@+id/contactField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Kontaktinformation"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/addButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp" />
+
+    <!-- Erstes Dropdown-Menü -->
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contactField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp" />
+
+    <!-- Zweites Dropdown-Menü -->
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/spinner1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp" />
+
     <!-- Textfeld 1 -->
     <EditText
         android:id="@+id/textField1"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/textfeld_1"
-        android:paddingTop="15dp"
-        />
+        android:hint="Textfeld 1"
+        app:layout_constraintTop_toBottomOf="@id/spinner2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp" />
 
-
-    <!-- Textfeld 2 -->
+    <!-- Textfeld 2, das den gesamten verfügbaren Platz einnimmt -->
     <EditText
         android:id="@+id/textField2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:hint="Textfeld 2"
-        android:paddingTop="15dp"
-        android:layout_weight="1"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textField1"
+        app:layout_constraintBottom_toTopOf="@id/boldText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp" />
 
+    <!-- "Bold" Button -->
     <Button
         android:id="@+id/boldText"
         android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_marginBottom="15dp"
+        android:layout_height="wrap_content"
         android:text="Bold"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="15dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

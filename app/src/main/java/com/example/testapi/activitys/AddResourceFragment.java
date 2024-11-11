@@ -14,12 +14,17 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.R;
+
+import java.util.ArrayList;
 
 public class AddResourceFragment extends FragmentClickable {
     private ApiHandler apiHandler = null;
@@ -27,11 +32,15 @@ public class AddResourceFragment extends FragmentClickable {
     private Button boldButton;
     private EditText flied1;
     private EditText flied2;
+    private  EditText contactFlied;
     private  boolean  isBold = false;
     private RelativeSizeSpan span;
     private SpannableString spannable;
     private int previousTextLength = 0;
     MainActivity parent ;
+    Spinner spinner1, spinner2;
+    ArrayAdapter<String> adapter1, adapter2;
+    ArrayList<String> items1, items2;
 
 
 
@@ -43,6 +52,7 @@ public class AddResourceFragment extends FragmentClickable {
         Button button = view.findViewById(R.id.addButton);
         flied1 = view.findViewById(R.id.textField1);
         flied2 = view.findViewById(R.id.textField2);
+        contactFlied = view.findViewById(R.id.contactField);
         boldButton = view.findViewById(R.id.boldText);
         createApiHandler();
         button.setOnClickListener(new View.OnClickListener() {
@@ -51,9 +61,13 @@ public class AddResourceFragment extends FragmentClickable {
             if(flied1.getText().toString().isEmpty()||flied2.getText().toString().isEmpty()){
                 Toast.makeText(parent.getApplicationContext(), "Please enter both the values", Toast.LENGTH_SHORT).show();
             }else {
+                String contactData = contactFlied.getText().toString();
+                if (contactData.isEmpty()){
+                    contactData = " ";
+                }
                 String titel = flied1.getText().toString();
                 Spannable beschreibung = flied2.getText();
-                postData(titel,beschreibung, MainActivity.userid);
+                postData(titel,beschreibung, contactData,MainActivity.userid);
             }
             }
         });
@@ -117,12 +131,86 @@ public class AddResourceFragment extends FragmentClickable {
 
             }
         });
+        setUpSpinners();
         return  view;
     }
-    private   void postData(String titel,Spannable beschreibung ,int userid){
-        apiHandler.addJsonList(titel, Html.toHtml(beschreibung,Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE),userid);
+    private   void postData(String titel,Spannable beschreibung ,String extraData,int userid){
+        ArrayList<Integer> tagList = new ArrayList<>();
+        int spinnerValue1 = ListViewFragment.tagSortingLabel.indexOf((String) spinner1.getSelectedItem());
+        if (spinnerValue1 != 0){
+            tagList.add(spinnerValue1);
+        }
+        int spinnerValue2 = ListViewFragment.tagSortingLabel.indexOf((String) spinner2.getSelectedItem());
+        if (spinnerValue2 !=0){
+            tagList.add(spinnerValue2);
+        }
+        if(tagList.isEmpty()){
+            tagList.add(-1);
+        }
+        apiHandler.addJsonList(titel, Html.toHtml(beschreibung,Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE),extraData,userid,tagList);
     }
     private  void  createApiHandler(){
         apiHandler = ((MainActivity) requireActivity()).getApiHandler();
+    }
+    private  void setUpSpinners(){
+        spinner1 = view.findViewById(R.id.spinner1);
+        spinner2 = view.findViewById(R.id.spinner2);
+        items1 = new ArrayList<>(ListViewFragment.tagSortingLabel);
+        items2 = new ArrayList<>(ListViewFragment.tagSortingLabel);
+
+        adapter1 = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, items1);
+        adapter2 = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, items2);
+
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner1.setAdapter(adapter1);
+        spinner2.setAdapter(adapter2);
+
+// Listener für den ersten Spinner
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0){
+                    String selectedItem = items1.get(position);
+                    // Entferne  dasausgewählte Element aus dem zweiten Spinner
+                    items2.clear();
+                    items2.addAll(ListViewFragment.tagSortingLabel);
+                    items2.remove(selectedItem);
+                    adapter2.notifyDataSetChanged();
+                }else {
+                    items2.clear();
+                    items2.addAll(ListViewFragment.tagSortingLabel);
+                    adapter1.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+// Listener für den zweiten Spinner
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position !=0){
+                    String selectedItem = items2.get(position);
+                    // Entferne das ausgewählte Element aus dem ersten Spinner
+                    items1.clear();
+                    items1.addAll(ListViewFragment.tagSortingLabel);
+                    items1.remove(selectedItem);
+                    adapter1.notifyDataSetChanged();
+                }else {
+                    items1.clear();
+                    items1.addAll(ListViewFragment.tagSortingLabel);
+                    adapter1.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 }

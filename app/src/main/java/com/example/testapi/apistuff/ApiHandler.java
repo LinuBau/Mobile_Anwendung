@@ -6,7 +6,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testapi.activitys.AppCompatActivitySafe;
+import com.example.testapi.activitys.ChatViewFragment;
 import com.example.testapi.activitys.MainActivity;
+import com.example.testapi.dataobjects.Message;
 import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.layoutuse.ChatListApdatar;
 import com.example.testapi.layoutuse.ItemViewInterface;
@@ -20,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiHandler  {
-    private AppCompatActivitySafe parent;
+    private MainActivity parent;
     private  FlaskApiService apiService;
     private  RecyclerView recyclerListView;
     private RecyclerView recyclerChatView ;
@@ -29,12 +31,12 @@ public class ApiHandler  {
     public  static  final int CREATE_RECYLERVIEW = 1;
     public  static  final int UPDATE_RECYLERVIEW = 2;
 
-    public ApiHandler(AppCompatActivitySafe parent, FlaskApiService apiService, RecyclerView recyclerListView) {
+    public ApiHandler(MainActivity parent, FlaskApiService apiService, RecyclerView recyclerListView) {
         this.parent = parent;
         this.apiService = apiService;
         this.recyclerListView = recyclerListView;
     }
-    public ApiHandler(AppCompatActivitySafe parent, FlaskApiService apiService){
+    public ApiHandler(MainActivity parent, FlaskApiService apiService){
         this.parent = parent;
         this.apiService = apiService;
     }
@@ -99,8 +101,8 @@ public class ApiHandler  {
     }
 
 }
-    public void addJsonList(String titel,String beschreibung,int userid){
-        Notice newAnzeige = new Notice(beschreibung,titel,userid,0);
+    public void addJsonList(String titel,String beschreibung,String extraData,int userid,ArrayList<Integer> tags){
+        Notice newAnzeige = new Notice(beschreibung,titel,userid,extraData,tags);
         Call call = apiService.addJsonObject(newAnzeige);
         call.enqueue(new Callback() {
             @Override
@@ -174,6 +176,7 @@ public class ApiHandler  {
                     MainActivity.chatsKeys = new ArrayList<>(keyList);
                     recyclerChatView.setAdapter(new ChatListApdatar(parent.getApplicationContext(),MainActivity.chatsKeys,chatInterface));
                 }
+
             }
 
             @Override
@@ -183,6 +186,25 @@ public class ApiHandler  {
             }
         });
 
+    }
+    public void  createChatFragment(int userId2){
+        Call<List<Message>> call = apiService.getChat(MainActivity.userid,userId2);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                if (response.isSuccessful()){
+                    List<Message> chat = response.body();
+                    assert chat != null;
+                    parent.replaceFragment(new ChatViewFragment(),new ArrayList<>(chat));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+                Log.e("Retrofit Fehler", "Fehler beim Abrufen der ChatKeys: " + t.getMessage());
+                Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public  void setRecyclerListView(RecyclerView rv){
         this.recyclerListView = rv ;
