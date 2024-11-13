@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
 
+import java.util.ArrayList;
+
 public class ChatListFragment extends  FragmentClickable{
     ApiHandler apiHandler ;
     View view;
@@ -33,6 +35,6 @@ public class ChatListFragment extends  FragmentClickable{
 
     @Override
     public void onItemClick(int position) {
-
+        apiHandler.createChatFragment(MainActivity.chatsKeys.get(position));
     }
 }

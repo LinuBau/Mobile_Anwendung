@@ -1,10 +1,12 @@
 package com.example.testapi.activitys;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.apistuff.FlaskApiService;
 import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.dataobjects.UserDataManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivitySafe {
-    private TabLayout tabLayout;
+    private BottomNavigationView tabLayout;
     public  static  ArrayList<Integer> chatsKeys;
     public static int userid = 9999;
     private ApiHandler apiHandler = null;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivitySafe {
                     .add(R.id.fragmentContainer, ListViewFragment.class, null)
                     .commit();
         }
-        tabLayout = findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivitySafe {
 
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
-        setupTabs();
+        //setupTabs();
         replaceFragment(new ListViewFragment(),true);
 
 
@@ -148,29 +151,28 @@ public class MainActivity extends AppCompatActivitySafe {
                 .addToBackStack(null)
                 .commit();
     }
-    private void setupTabs() {
-        // Tabs hinzufügen
-        tabLayout.addTab(tabLayout.newTab().setText("List View"));
-        tabLayout.addTab(tabLayout.newTab().setText("Add Resource"));
+    private void setupTabs(Bundle savedInstanceState ) {
+        if (savedInstanceState == null) {
+            replaceFragment(new ListViewFragment()); // Standardfragment
+        }
 
-        // Listener für Tabwechsel
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public void onTabSelected(@NonNull TabLayout.Tab tab) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment;
-                if (tab.getPosition() == 0) {
+
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_home) {
                     selectedFragment = new ListViewFragment();
+                } else if (itemId == R.id.navigation_message) {
+                    selectedFragment = new AddResourceFragment();
                 } else {
-                    selectedFragment = new ChatListFragment();
+                    return false;
                 }
+
                 replaceFragment(selectedFragment);
+                return true;
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
         });
     }
 
