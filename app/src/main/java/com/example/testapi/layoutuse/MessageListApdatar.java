@@ -1,5 +1,6 @@
 package com.example.testapi.layoutuse;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,12 @@ public class MessageListApdatar extends RecyclerView.Adapter<MessageListViewHold
             return TYPE_SENT;
         }
         return TYPE_RECEIVED;
+    }
+
+    public void updateMessages(ArrayList<Message> newMessages) {
+        this.messages.clear();
+        this.messages.addAll(newMessages);
+        notifyDataSetChanged();
     }
 
     @NonNull

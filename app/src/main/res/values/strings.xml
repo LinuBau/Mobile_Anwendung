@@ -3,4 +3,6 @@
     <string name="textfeld_1">Textfeld 1</string>
     <string name="home">Home</string>
     <string name="message">Message</string>
+    <string name="kont">Kontaktdaten</string>
+    <string name="messa">Message</string>
 </resources>

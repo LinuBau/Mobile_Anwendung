@@ -26,6 +26,8 @@ public interface FlaskApiService {
     Call<List<Integer>> getChatKeys(@Path("userid") int userid);
     @GET("/get_messages/{this_userid}/{another_userid}")
     Call<List<Message>> getChat(@Path("this_userid") int this_userid,@Path("another_userid") int another_userid);
+    @POST("/send_message")
+    Call<Message> sendMessage(@Body Message message);
 
 }
 

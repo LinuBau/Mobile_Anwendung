@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivitySafe {
     private UserDataManager userDataManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final long REFRESH_INTERVAL = 60000;
-    private ArrayList<String> tags ;
 
     private final Runnable refreshRunnable = new Runnable() {
         @Override
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivitySafe {
 
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
-        //setupTabs();
+        setupTabs();
         replaceFragment(new ListViewFragment(),true);
 
 
@@ -151,10 +150,18 @@ public class MainActivity extends AppCompatActivitySafe {
                 .addToBackStack(null)
                 .commit();
     }
-    private void setupTabs(Bundle savedInstanceState ) {
-        if (savedInstanceState == null) {
-            replaceFragment(new ListViewFragment()); // Standardfragment
-        }
+    public void replaceFragment(Fragment fragment, ArrayList<Parcelable> list, int i){
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("ListaData",list);
+        args.putInt("ExtraInt",i);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer,fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    private void setupTabs() {
 
         tabLayout.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
@@ -165,7 +172,7 @@ public class MainActivity extends AppCompatActivitySafe {
                 if (itemId == R.id.navigation_home) {
                     selectedFragment = new ListViewFragment();
                 } else if (itemId == R.id.navigation_message) {
-                    selectedFragment = new AddResourceFragment();
+                    selectedFragment = new ChatListFragment();
                 } else {
                     return false;
                 }
@@ -175,7 +182,9 @@ public class MainActivity extends AppCompatActivitySafe {
             }
         });
     }
-
+    public  void setNavigationBarTab(int id){
+        tabLayout.setSelectedItemId(id);
+    }
 
     @Override
     protected void onDestroy() {

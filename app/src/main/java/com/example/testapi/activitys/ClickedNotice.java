@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,15 +16,20 @@ import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 
 public class ClickedNotice extends FragmentClickable {
+    MainActivity parent;
     TextView titel, inhalt,kontaktflied;
+    Button messageButton;
     View view;
+    Notice receivedNotice;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
         super.onCreateView( inflater,container,savedInstanceState);
+        parent = (MainActivity) requireActivity();
         Bundle args = getArguments();
-        Notice receivedNotice  =  args.getParcelable("notice");
+        receivedNotice  =  args.getParcelable("notice");
         view = inflater.inflate(R.layout.clicked_beitrag_full_screen, container, false);
         titel = view.findViewById(R.id.beitagName);
+        messageButton = view.findViewById(R.id.messag_Button);
         inhalt = view.findViewById(R.id.beitagInhalt);
         kontaktflied = view.findViewById(R.id.kontaktdatenText);
 
@@ -33,6 +39,14 @@ public class ClickedNotice extends FragmentClickable {
         titel.setVisibility(View.VISIBLE);
         inhalt.setVisibility(View.VISIBLE);
         kontaktflied.setVisibility(View.VISIBLE);
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parent.setNavigationBarTab(R.id.navigation_message);
+                parent.getApiHandler().createChatFragment(receivedNotice.getErstellerId());
+            }
+        });
 
         return view;
     }

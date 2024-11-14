@@ -1,5 +1,6 @@
 package com.example.testapi.apistuff;
 
+import android.health.connect.datatypes.units.Length;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -7,14 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testapi.activitys.AppCompatActivitySafe;
 import com.example.testapi.activitys.ChatViewFragment;
+import com.example.testapi.activitys.ListViewFragment;
 import com.example.testapi.activitys.MainActivity;
 import com.example.testapi.dataobjects.Message;
 import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.layoutuse.ChatListApdatar;
 import com.example.testapi.layoutuse.ItemViewInterface;
+import com.example.testapi.layoutuse.MessageListApdatar;
 import com.example.testapi.layoutuse.NoticeListApdatar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -75,8 +79,15 @@ public class ApiHandler  {
                                     public void run() {
                                         NoticeListApdatar apdatar = (NoticeListApdatar) recyclerListView.getAdapter();
                                         MainActivity.notices = new ArrayList<>(jsonList);
-                                        assert apdatar != null;
-                                        apdatar.updateData(jsonList);
+                                        if (apdatar != null){
+                                            if (!ListViewFragment.userTags.isEmpty()){
+                                                apdatar.updateData(new ArrayList<>(Arrays.asList(
+                                                        jsonList.stream().filter(n -> n.getTags().stream().anyMatch(ListViewFragment.userTags::contains))
+                                                                .toArray(Notice[]::new))));
+                                            }else {
+                                                apdatar.updateData(jsonList);
+                                            }
+                                        }
                                     }
                                 });
                             }
@@ -173,8 +184,10 @@ public class ApiHandler  {
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()){
                     List<Integer> keyList = response.body();
-                    MainActivity.chatsKeys = new ArrayList<>(keyList);
-                    recyclerChatView.setAdapter(new ChatListApdatar(parent.getApplicationContext(),MainActivity.chatsKeys,chatInterface));
+                    Log.i("Lenght of List Api Handeler","Lenght :"+keyList.size());
+                    ArrayList<Integer> keys = new ArrayList<>(keyList);
+                    MainActivity.chatsKeys = keys;
+                    recyclerChatView.setAdapter(new ChatListApdatar(parent.getApplicationContext(),keys,chatInterface));
                 }
 
             }
@@ -195,12 +208,48 @@ public class ApiHandler  {
                 if (response.isSuccessful()){
                     List<Message> chat = response.body();
                     assert chat != null;
-                    parent.replaceFragment(new ChatViewFragment(),new ArrayList<>(chat));
+                    parent.replaceFragment(new ChatViewFragment(),new ArrayList<>(chat),userId2);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Message>> call, Throwable t) {
+                Log.e("Retrofit Fehler", "Fehler beim Abrufen der ChatKeys: " + t.getMessage());
+                Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void  updateChat(MessageListApdatar apdatar,int userId2){
+        Call<List<Message>> call = apiService.getChat(MainActivity.userid,userId2);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                if (response.isSuccessful()){
+                    List<Message> chat = response.body();
+                    assert chat != null;
+                    apdatar.updateMessages(new ArrayList<>(chat));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+                Log.e("Retrofit Fehler", "Fehler beim Abrufen der ChatKeys: " + t.getMessage());
+                Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void  sendMessage(Message message){
+        Call<Message> call = apiService.sendMessage(message);
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
                 Log.e("Retrofit Fehler", "Fehler beim Abrufen der ChatKeys: " + t.getMessage());
                 Toast.makeText(parent, "Keys könnte nicht bestimmte werden", Toast.LENGTH_SHORT).show();
             }

@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="175dp"
-        android:text="Kontaktdaten"
+        android:text="@string/kont"
         android:textColor="#000000"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -66,5 +66,14 @@
         android:padding="5dp"
         android:textColor="#000000"
         android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/messag_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="68dp"
+        android:text="@string/messa" />
 
 </RelativeLayout>
