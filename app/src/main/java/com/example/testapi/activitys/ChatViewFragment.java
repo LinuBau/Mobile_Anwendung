@@ -1,6 +1,8 @@
 package com.example.testapi.activitys;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +25,22 @@ public class ChatViewFragment extends FragmentClickable{
     private ArrayList<Message> chat;
     private  int thisChat;
     private  MainActivity parent;
+    private Handler handler;
     private  View view;
     private ImageButton imageButton;
     private EditText editText;
     private ApiHandler apiHandler ;
     RecyclerView recyclerView;
+    private static final long REFRESH_INTERVAL = 2000;
+
+
+    private final Runnable refreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshData();
+            handler.postDelayed(this, REFRESH_INTERVAL);
+        }
+    };
 
     @Nullable
     @Override
@@ -36,6 +49,8 @@ public class ChatViewFragment extends FragmentClickable{
         view = inflater.inflate(R.layout.chat_list,container,false);
         parent = (MainActivity) requireActivity();
         apiHandler = parent.getApiHandler();
+        handler = new Handler(Looper.getMainLooper());
+
         Bundle args = getArguments();
         chat =  args.getParcelableArrayList("ListaData");
         thisChat = args.getInt("ExtraInt");
@@ -54,6 +69,41 @@ public class ChatViewFragment extends FragmentClickable{
                 }
             }
         });
+        startAutoRefresh();
         return  view;
+    }
+
+    private void refreshData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    parent.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            apiHandler.updateChat((MessageListApdatar) recyclerView.getAdapter(),thisChat);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    parent.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            apiHandler.updateChat((MessageListApdatar) recyclerView.getAdapter(),thisChat);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+    private void startAutoRefresh() {
+        handler.postDelayed(refreshRunnable, REFRESH_INTERVAL);
+    }
+    @Override
+    public   void onDestroyView() {
+        super.onDestroyView();
+        if (handler != null) {
+            handler.removeCallbacks(refreshRunnable);
+        }
     }
 }

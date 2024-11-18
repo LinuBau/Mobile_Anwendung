@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivitySafe {
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://10.0.2.2:5000")
+                .baseUrl("http://139.13.48.165:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FlaskApiService apiService = retrofit.create(FlaskApiService.class);
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivitySafe {
         apiHandler.setOrValidUserId();
         setupTabs();
         replaceFragment(new ListViewFragment(),true);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
 

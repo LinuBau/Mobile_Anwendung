@@ -2,7 +2,7 @@ package com.example.testapi.activitys;
 
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
@@ -26,6 +26,7 @@ public class ClickedNotice extends FragmentClickable {
         super.onCreateView( inflater,container,savedInstanceState);
         parent = (MainActivity) requireActivity();
         Bundle args = getArguments();
+        assert args != null;
         receivedNotice  =  args.getParcelable("notice");
         view = inflater.inflate(R.layout.clicked_beitrag_full_screen, container, false);
         titel = view.findViewById(R.id.beitagName);
@@ -40,12 +41,9 @@ public class ClickedNotice extends FragmentClickable {
         inhalt.setVisibility(View.VISIBLE);
         kontaktflied.setVisibility(View.VISIBLE);
 
-        messageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                parent.setNavigationBarTab(R.id.navigation_message);
-                parent.getApiHandler().createChatFragment(receivedNotice.getErstellerId());
-            }
+        messageButton.setOnClickListener(view -> {
+            parent.setNavigationBarTab(R.id.navigation_message);
+            parent.getApiHandler().createChatFragment(receivedNotice.getErstellerId());
         });
 
         return view;

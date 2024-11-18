@@ -68,6 +68,9 @@ public class AddResourceFragment extends FragmentClickable {
                 String titel = flied1.getText().toString();
                 Spannable beschreibung = flied2.getText();
                 postData(titel,beschreibung, contactData,MainActivity.userid);
+                apiHandler.fetchJsonList(ApiHandler.UPDATE_RECYLERVIEW);
+                parent.replaceFragment(new ListViewFragment());
+
             }
             }
         });

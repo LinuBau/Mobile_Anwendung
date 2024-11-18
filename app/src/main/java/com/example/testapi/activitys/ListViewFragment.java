@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ListViewFragment extends FragmentClickable {
     private ApiHandler apiHandler;
@@ -50,7 +51,7 @@ public class ListViewFragment extends FragmentClickable {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                parent.replaceFragment(new AddResourceFragment(), true);
+                parent.replaceFragment(new AddResourceFragment());
             }
         });
         setUpDropdownMenu();
@@ -72,6 +73,7 @@ public class ListViewFragment extends FragmentClickable {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 NoticeListApdatar apdatar = (NoticeListApdatar) recyclerView.getAdapter();
                 if (position == 0){
+                    ListViewFragment.userTags.clear();
                     apiHandler.fetchJsonList(ApiHandler.UPDATE_RECYLERVIEW);
                 }else {
                     ListViewFragment.userTags.clear();
