@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/black"
         android:textSize="20sp"
+        android:textColor="@color/md_theme_onBackground_highContrast"
         tools:text="Name" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Titel"
         android:layout_marginStart="20dp"
-        android:textColor="@color/black"
+        android:textColor="@color/md_theme_onBackground_highContrast"
         tools:text="Beschreibung"
         android:minLines="2"
         android:maxLines="5"
@@ -35,5 +35,6 @@
         android:layout_height="2dp"
         android:layout_below="@+id/Beschreibung"
         android:layout_marginTop="8dp"
-        android:background="#BAB5B5" />
+        android:background="@color/md_theme_primary"
+        />
 </RelativeLayout>

@@ -18,7 +18,6 @@ public class UserDataManager {
     }
     // Save user data
     public void saveUserData(int userId) {
-        Log.e("Speichern von User Data","UserID :"+userId);
         editor.putInt("userid", userId);
         editor.apply();
     }

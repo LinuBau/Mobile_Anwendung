@@ -5,4 +5,5 @@
     <string name="message">Message</string>
     <string name="kont">Kontaktdaten</string>
     <string name="messa">Message</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

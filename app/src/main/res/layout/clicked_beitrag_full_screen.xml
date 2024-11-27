@@ -26,7 +26,6 @@
         android:text="TextView"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:textColor="#000000"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -36,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/beitagName"
         android:layout_marginTop="15dp"
-        android:textColor="#000000" />
+         />
 
     <View
         android:id="@+id/divider"
@@ -44,7 +43,7 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="217dp"
-        android:background="#808080" />
+        android:background="@color/md_theme_onPrimaryFixedVariant" />
 
     <TextView
         android:id="@+id/kontaktdatenLabel"
@@ -53,7 +52,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="175dp"
         android:text="@string/kont"
-        android:textColor="#000000"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -64,7 +62,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="141dp"
         android:padding="5dp"
-        android:textColor="#000000"
         android:textSize="16sp" />
 
     <Button

@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="TextView"
+        android:textColor="@color/md_theme_onBackground_highContrast"
         android:textStyle="bold"
         android:textSize="25dp"
-        android:textColor="#000000"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
     <LinearLayout
@@ -20,7 +20,7 @@
         android:layout_height="2dp"
         android:layout_below="@+id/chat_item"
         android:layout_marginTop="8dp"
-        android:background="#BAB5B5" />
+        android:background="@color/md_theme_primary" />
 
 
 </RelativeLayout>

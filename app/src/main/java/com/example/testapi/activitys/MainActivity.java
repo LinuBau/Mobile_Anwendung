@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivitySafe {
         setupTabs();
         replaceFragment(new ListViewFragment(),true);
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
 

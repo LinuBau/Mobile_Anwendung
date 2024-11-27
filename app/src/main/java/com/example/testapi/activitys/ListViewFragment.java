@@ -51,7 +51,7 @@ public class ListViewFragment extends FragmentClickable {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                parent.replaceFragment(new AddResourceFragment());
+                parent.replaceFragment(new AddResourceFragment(),true);
             }
         });
         setUpDropdownMenu();
