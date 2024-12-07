@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/beitagName"
         android:layout_marginTop="15dp"
-         />
+        />
 
     <View
         android:id="@+id/divider"
@@ -70,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
+        android:drawableLeft="@drawable/ic_envelope"
         android:layout_marginBottom="68dp"
         android:text="@string/messa" />
 

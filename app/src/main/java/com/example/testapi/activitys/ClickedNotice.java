@@ -28,24 +28,39 @@ public class ClickedNotice extends FragmentClickable {
         Bundle args = getArguments();
         assert args != null;
         receivedNotice  =  args.getParcelable("notice");
-        view = inflater.inflate(R.layout.clicked_beitrag_full_screen, container, false);
-        titel = view.findViewById(R.id.beitagName);
-        messageButton = view.findViewById(R.id.messag_Button);
-        inhalt = view.findViewById(R.id.beitagInhalt);
-        kontaktflied = view.findViewById(R.id.kontaktdatenText);
+        if (MainActivity.isLogtin){
+            view = inflater.inflate(R.layout.clicked_beitrag_full_screen, container, false);
+            titel = view.findViewById(R.id.beitagName);
+            messageButton = view.findViewById(R.id.messag_Button);
+            inhalt = view.findViewById(R.id.beitagInhalt);
+            kontaktflied = view.findViewById(R.id.kontaktdatenText);
 
-        titel.setText(receivedNotice.getAnzeigeName());
-        inhalt.setText(Html.fromHtml(receivedNotice.getBeschreibung(),Html.FROM_HTML_MODE_LEGACY));
-        kontaktflied.setText(receivedNotice.getExtraData());
-        titel.setVisibility(View.VISIBLE);
-        inhalt.setVisibility(View.VISIBLE);
-        kontaktflied.setVisibility(View.VISIBLE);
+            titel.setText(receivedNotice.getAnzeigeName());
+            inhalt.setText(Html.fromHtml(receivedNotice.getBeschreibung(),Html.FROM_HTML_MODE_LEGACY));
+            kontaktflied.setText(receivedNotice.getExtraData());
+            titel.setVisibility(View.VISIBLE);
+            inhalt.setVisibility(View.VISIBLE);
+            kontaktflied.setVisibility(View.VISIBLE);
 
-        messageButton.setOnClickListener(view -> {
-            parent.setNavigationBarTab(R.id.navigation_message);
-            parent.getApiHandler().createChatFragment(receivedNotice.getErstellerId());
-        });
+            messageButton.setOnClickListener(view -> {
+                parent.setNavigationBarTab(R.id.navigation_message);
+                parent.getApiHandler().createChatFragment(receivedNotice.getErstellerId());
+            });
 
+
+        }else {
+            view = inflater.inflate(R.layout.clicked_beitrag_not_login, container, false);
+            titel = view.findViewById(R.id.beitagName);
+            inhalt = view.findViewById(R.id.beitagInhalt);
+            Button loginButton = view.findViewById(R.id.login_button);
+            titel.setText(receivedNotice.getAnzeigeName());
+            inhalt.setText(Html.fromHtml(receivedNotice.getBeschreibung(),Html.FROM_HTML_MODE_LEGACY));
+            titel.setVisibility(View.VISIBLE);
+            inhalt.setVisibility(View.VISIBLE);
+            loginButton.setOnClickListener(View ->{
+                parent.replaceFragment(new LoginFragment(),MainActivity.notices.indexOf(receivedNotice),true);
+            });
+        }
         return view;
     }
 }

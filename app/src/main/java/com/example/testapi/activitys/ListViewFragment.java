@@ -1,25 +1,27 @@
 package com.example.testapi.activitys;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
-import com.example.testapi.layoutuse.NoticeListApdatar;
+import com.example.testapi.layoutuse.NoticeListAdaptar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ListViewFragment extends FragmentClickable {
     private ApiHandler apiHandler;
@@ -55,6 +57,18 @@ public class ListViewFragment extends FragmentClickable {
             }
         });
         setUpDropdownMenu();
+        Button loginButton = view.findViewById(R.id.start_login);
+        if (!MainActivity.isLogtin) {
+            loginButton.setVisibility(View.VISIBLE);
+            loginButton.setOnClickListener(View -> {
+                MainActivity.isLogtin = true;
+                parent.replaceFragment(new LoginFragment(),true);
+
+            });
+        } else {
+            loginButton.setVisibility(View.GONE);
+        }
+
         return view;
     }
     public  void setUpDropdownMenu(){
@@ -71,7 +85,7 @@ public class ListViewFragment extends FragmentClickable {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                NoticeListApdatar apdatar = (NoticeListApdatar) recyclerView.getAdapter();
+                NoticeListAdaptar apdatar = (NoticeListAdaptar) recyclerView.getAdapter();
                 if (position == 0){
                     ListViewFragment.userTags.clear();
                     apiHandler.fetchJsonList(ApiHandler.UPDATE_RECYLERVIEW);

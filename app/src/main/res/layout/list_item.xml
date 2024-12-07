@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="10dp"
+    card_view:cardBackgroundColor="@color/md_theme_outlineVariant"
+    card_view:cardElevation="8dp"
     android:clickable="true"
     android:focusable="true">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
         android:id="@+id/Titel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/md_theme_onBackground_highContrast"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="5dp"
         android:textSize="20sp"
-        android:textColor="@color/md_theme_onBackground_highContrast"
         tools:text="Name" />
 
     <TextView
@@ -22,19 +28,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Titel"
-        android:layout_marginStart="20dp"
         android:textColor="@color/md_theme_onBackground_highContrast"
+        android:layout_marginStart="20dp"
         tools:text="Beschreibung"
         android:minLines="2"
         android:maxLines="5"
         android:ellipsize="end"
         />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/Beschreibung"
         android:layout_marginTop="8dp"
         android:background="@color/md_theme_primary"
-        />
+        />-->
 </RelativeLayout>
+</androidx.cardview.widget.CardView>

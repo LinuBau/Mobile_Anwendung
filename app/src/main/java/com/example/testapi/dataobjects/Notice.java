@@ -7,6 +7,7 @@ import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import kotlin.Pair;
 
@@ -73,7 +74,23 @@ public class Notice implements Parcelable {
         tags = new ArrayList<>();
         in.readList(tags, Integer.class.getClassLoader()); // Read tags from parcel
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notice notice = (Notice) o;
+        return erstellerId == notice.erstellerId
+                && timestamp == notice.timestamp
+                && Objects.equals(AnzeigeName, notice.AnzeigeName)
+                && Objects.equals(Beschreibung, notice.Beschreibung)
+                && Objects.equals(extraData, notice.extraData)
+                && Objects.equals(tags, notice.tags);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(AnzeigeName, Beschreibung, erstellerId, extraData, tags, timestamp);
+    }
     public static final Creator<Notice> CREATOR = new Creator<Notice>() {
         @Override
         public Notice createFromParcel(Parcel in) {
@@ -100,6 +117,7 @@ public class Notice implements Parcelable {
         dest.writeLong(timestamp);
         dest.writeList(tags); // Write tags to parcel
     }
+
 
     public String getAnzeigeName() {
         return AnzeigeName;
@@ -155,7 +173,6 @@ public class Notice implements Parcelable {
             tags.add(tag);
         }
     }
-
     public void removeTag(Integer tag) {
         tags.remove(tag);
     }

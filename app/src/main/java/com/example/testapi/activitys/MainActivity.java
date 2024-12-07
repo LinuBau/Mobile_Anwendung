@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivitySafe {
     private UserDataManager userDataManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final long REFRESH_INTERVAL = 60000;
+    public  static  boolean isLogtin=false;
 
     private final Runnable refreshRunnable = new Runnable() {
         @Override
@@ -53,16 +54,13 @@ public class MainActivity extends AppCompatActivitySafe {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainer, ListViewFragment.class, null)
-                    .commit();
+            replaceFragment(new ListViewFragment());
         }
         tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.13.48.165:5000")
+                .baseUrl("http://192.168.188.150:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FlaskApiService apiService = retrofit.create(FlaskApiService.class);
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivitySafe {
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
         setupTabs();
-        replaceFragment(new ListViewFragment(),true);
 
 
 
@@ -132,7 +129,6 @@ public class MainActivity extends AppCompatActivitySafe {
                 .commit();
     }
     public void replaceFragment(Fragment fragment,int pos) {
-        Log.e("List Log :",MainActivity.notices.get(pos).toString());
         Bundle args = new Bundle();
         args.putParcelable("notice",MainActivity.notices.get(pos));
         fragment.setArguments(args);
@@ -140,6 +136,15 @@ public class MainActivity extends AppCompatActivitySafe {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
                 .addToBackStack(null)
+                .commit();
+    }
+    public void replaceFragment(Fragment fragment,int pos,boolean t) {
+        Bundle args = new Bundle();
+        args.putParcelable("notice",MainActivity.notices.get(pos));
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
                 .commit();
     }
     public void replaceFragment(Fragment fragment, ArrayList<Parcelable> list){

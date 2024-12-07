@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<!--
+<ImageView
+    android:id="@+id/erstellerBild"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_toEndOf="@id/erstellerBild"
+    android:textSize="20dp"
+    android:text="User"
+    />
+    -->
+<TextView
+    android:id="@+id/beitagName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:text="TextView"
+    android:textStyle="bold"
+    android:textSize="30sp"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:layout_editor_absoluteX="0dp" />
+
+<TextView
+    android:id="@+id/beitagInhalt"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_below="@+id/beitagName"
+    android:layout_marginTop="15dp"
+    />
+
+<View
+    android:id="@+id/divider"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="217dp"
+    android:background="@color/md_theme_onPrimaryFixedVariant" />
+
+<TextView
+    android:id="@+id/not_login_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="175dp"
+    android:text="@string/n_login"
+    android:textSize="25sp"
+    android:textStyle="bold" />
+
+<Button
+    android:id="@+id/login_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginBottom="75dp"
+    android:text="@string/login" />
+
+</RelativeLayout>

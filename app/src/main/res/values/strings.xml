@@ -6,4 +6,6 @@
     <string name="kont">Kontaktdaten</string>
     <string name="messa">Message</string>
     <string name="type_a_message">Type a message</string>
+    <string name="login">Login</string>
+    <string name="n_login">Für alles Einlogen</string>
 </resources>

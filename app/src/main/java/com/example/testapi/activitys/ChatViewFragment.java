@@ -31,7 +31,7 @@ public class ChatViewFragment extends FragmentClickable{
     private EditText editText;
     private ApiHandler apiHandler ;
     RecyclerView recyclerView;
-    private static final long REFRESH_INTERVAL = 2000;
+    private static final long REFRESH_INTERVAL = 1000;
 
 
     private final Runnable refreshRunnable = new Runnable() {

@@ -15,15 +15,11 @@ public class NoticeViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         titelView = itemView.findViewById(R.id.Titel);
         beschreibungView = itemView.findViewById(R.id.Beschreibung);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (itemViewInterface != null){
-                    int pos = getAbsoluteAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION){
-                        itemViewInterface.onItemClick(pos);
-                    }
-                }
+
+        itemView.setOnClickListener(view -> {
+            int pos = getAbsoluteAdapterPosition();
+            if (itemViewInterface != null && pos != RecyclerView.NO_POSITION) {
+                itemViewInterface.onItemClick(pos);
             }
         });
     }

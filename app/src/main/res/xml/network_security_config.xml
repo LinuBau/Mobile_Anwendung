@@ -25,6 +25,11 @@
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">192.168.178.67</domain>
         <domain includeSubdomains="true">139.13.48.165</domain>
+        <domain includeSubdomains="true">192.168.178.24</domain>
+        <domain includeSubdomains="true">139.13.55.151</domain>
+        <domain includeSubdomains="true">10.4.167.13</domain>
+        <domain includeSubdomains="true">192.168.188.150</domain>
+
         <!-- Common Android emulator localhost address -->
     </domain-config>
 </network-security-config>

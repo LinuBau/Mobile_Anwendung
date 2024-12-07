@@ -1,12 +1,10 @@
 package com.example.testapi.apistuff;
 
-import android.health.connect.datatypes.units.Length;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testapi.activitys.AppCompatActivitySafe;
 import com.example.testapi.activitys.ChatViewFragment;
 import com.example.testapi.activitys.ListViewFragment;
 import com.example.testapi.activitys.MainActivity;
@@ -15,7 +13,7 @@ import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.layoutuse.ChatListApdatar;
 import com.example.testapi.layoutuse.ItemViewInterface;
 import com.example.testapi.layoutuse.MessageListApdatar;
-import com.example.testapi.layoutuse.NoticeListApdatar;
+import com.example.testapi.layoutuse.NoticeListAdaptar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +66,7 @@ public class ApiHandler  {
                     switch (mode){
                         case 1:
                             if (recyclerListView != null){
-                                recyclerListView.setAdapter(new NoticeListApdatar(parent.getApplicationContext(),new ArrayList<>(jsonList),itemViewInterface));
+                                recyclerListView.setAdapter(new NoticeListAdaptar(parent.getApplicationContext(),new ArrayList<>(jsonList),itemViewInterface));
                                 MainActivity.notices = new  ArrayList<>(jsonList);
                             }
                         break;
@@ -77,7 +75,7 @@ public class ApiHandler  {
                                 parent.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        NoticeListApdatar apdatar = (NoticeListApdatar) recyclerListView.getAdapter();
+                                        NoticeListAdaptar apdatar = (NoticeListAdaptar) recyclerListView.getAdapter();
                                         MainActivity.notices = new ArrayList<>(jsonList);
                                         if (apdatar != null){
                                             if (!ListViewFragment.userTags.isEmpty()){

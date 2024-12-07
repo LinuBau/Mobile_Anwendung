@@ -13,15 +13,14 @@ import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class NoticeListApdatar extends RecyclerView.Adapter<NoticeViewHolder> {
+public class NoticeListAdaptar extends RecyclerView.Adapter<NoticeViewHolder> {
 
     Context context;
     ArrayList<Notice>  mylist;
     private  final   ItemViewInterface viewInterface;
-    public NoticeListApdatar(Context context, ArrayList<Notice> mylist,ItemViewInterface viewInterfac) {
+    public NoticeListAdaptar(Context context, ArrayList<Notice> mylist, ItemViewInterface viewInterfac) {
         this.context = context;
         this.mylist = mylist;
         this.viewInterface = viewInterfac;
