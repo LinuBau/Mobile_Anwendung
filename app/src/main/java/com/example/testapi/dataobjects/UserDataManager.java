@@ -14,6 +14,7 @@ public class UserDataManager {
         editor = sharedPreferences.edit();
     }
     public boolean hasKey(String key) {
+
         return sharedPreferences.contains(key);
     }
     // Save user data
@@ -31,11 +32,32 @@ public class UserDataManager {
 
     }
 
-
-
     // Clear all user data
     public void clearUserData() {
         editor.clear();
         editor.apply();
     }
+    public void saveAchievementProgress(String achievementName, int progress) {
+        editor.putInt("userid", userId);
+        editor.apply();
+    }
+
+    public int getAchievementProgress(String achievementName) {
+            return sharedPreferences.getInt(achievementName, 0);
+    }
+
+    public void resetAchievementProgress(String achievementName) {
+        editor.remove(achievementName);
+        editor.apply();
+    }
+
+    public void clearAllAchievements() {
+        for (String key : sharedPreferences.getAll().keySet()) {
+            if (!key.equals("userid")) {
+                editor.remove(key);
+            }
+        }
+    }
+
+
 }
