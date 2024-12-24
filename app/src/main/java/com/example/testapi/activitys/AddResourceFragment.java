@@ -137,6 +137,8 @@ public class AddResourceFragment extends FragmentClickable {
         setUpSpinners();
         return  view;
     }
+
+
     private   void postData(String titel,Spannable beschreibung ,String extraData,int userid){
         ArrayList<Integer> tagList = new ArrayList<>();
         int spinnerValue1 = ListViewFragment.tagSortingLabel.indexOf((String) spinner1.getSelectedItem());
@@ -151,6 +153,8 @@ public class AddResourceFragment extends FragmentClickable {
             tagList.add(-1);
         }
         apiHandler.addJsonList(titel, Html.toHtml(beschreibung,Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE),extraData,userid,tagList);
+
+        parent.trackAchievements();
     }
     private  void  createApiHandler(){
         apiHandler = ((MainActivity) requireActivity()).getApiHandler();

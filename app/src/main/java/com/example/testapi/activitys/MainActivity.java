@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,21 +91,22 @@ public class MainActivity extends AppCompatActivitySafe {
     }
 
 
-    private void trackAchievements() {
+    public void trackAchievements() {
 
         String AchievementType = "TotalPosts";
-        int targetProgress = 10;
+        int targetProgress = 1;
 
         int currentProgress = userDataManager.getAchievementProgress(AchievementType);
 
 
         currentProgress++;
         userDataManager.saveAchievementProgress(AchievementType, currentProgress);
-
+        // Log.d hat einfach nicht funktioniert wtf, aber das klappt fml ich hasse alles ich will sterben.
+        // Knapp ne Stunde debuggen weil ich dachte es liegt an mir was soll der scheiß android
         if (currentProgress >= targetProgress) {
-            Log.d("Achievement", "First Post" + AchievementType);
+            Toast.makeText(this, "trackAchievements() größer als target!", Toast.LENGTH_SHORT).show();
         } else {
-            Log.d("Achievement", "Fortschritt: " + currentProgress + "/" + targetProgress);
+            Toast.makeText(this, "trackAchievements() kleiner als target", Toast.LENGTH_SHORT).show();
         }
     }
     private void refreshData() {
