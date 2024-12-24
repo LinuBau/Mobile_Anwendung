@@ -53,14 +53,16 @@ public class MainActivity extends AppCompatActivitySafe {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
             replaceFragment(new ListViewFragment());
         }
+
         tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.188.150:5000")
+                .baseUrl("http://192.168.178.76:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FlaskApiService apiService = retrofit.create(FlaskApiService.class);
@@ -84,6 +86,26 @@ public class MainActivity extends AppCompatActivitySafe {
         });
         startAutoRefresh();
 
+        trackAchievements();
+    }
+
+
+    private void trackAchievements() {
+
+        String AchievementType = "TotalPosts";
+        int targetProgress = 10;
+
+        int currentProgress = userDataManager.getAchievementProgress(AchievementType);
+
+
+        currentProgress++;
+        userDataManager.saveAchievementProgress(AchievementType, currentProgress);
+
+        if (currentProgress >= targetProgress) {
+            Log.d("Achievement", "First Post" + AchievementType);
+        } else {
+            Log.d("Achievement", "Fortschritt: " + currentProgress + "/" + targetProgress);
+        }
     }
     private void refreshData() {
         new Thread(new Runnable() {

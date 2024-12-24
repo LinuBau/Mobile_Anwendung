@@ -14,7 +14,6 @@ public class UserDataManager {
         editor = sharedPreferences.edit();
     }
     public boolean hasKey(String key) {
-
         return sharedPreferences.contains(key);
     }
     // Save user data
@@ -29,7 +28,6 @@ public class UserDataManager {
             return sharedPreferences.getInt("userid", 0);
         }
         return 9999;
-
     }
 
     // Clear all user data
@@ -37,8 +35,10 @@ public class UserDataManager {
         editor.clear();
         editor.apply();
     }
+
+    // Achievementskram
     public void saveAchievementProgress(String achievementName, int progress) {
-        editor.putInt("userid", userId);
+        editor.putInt(achievementName, progress);
         editor.apply();
     }
 
@@ -57,7 +57,6 @@ public class UserDataManager {
                 editor.remove(key);
             }
         }
+        editor.apply();
     }
-
-
 }
