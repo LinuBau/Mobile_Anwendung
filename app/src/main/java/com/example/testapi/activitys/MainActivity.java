@@ -1,6 +1,7 @@
 package com.example.testapi.activitys;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
+import java.util.Date;
 import com.example.testapi.Achievements.Achievement;
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
@@ -26,6 +27,8 @@ import com.example.testapi.dataobjects.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
+import android.widget.Toast;
+import java.util.Calendar;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -47,8 +50,26 @@ public class MainActivity extends AppCompatActivitySafe {
         public void run() {
             refreshData();
             handler.postDelayed(this, REFRESH_INTERVAL);
+
         }
     };
+
+
+    // ------------------------------------------------------------------------------------------------------
+    private Context context;
+    public void currentDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int minutes = calendar.get(Calendar.MINUTE);
+
+        achievement.Date2Integer(year, month, day, minutes);
+        Toast.makeText(context, "Streaklänge ", Toast.LENGTH_SHORT).show(); // zum debuggen
+    }
+    // -------------------------------------------------------------------------------------------------------
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +131,8 @@ public class MainActivity extends AppCompatActivitySafe {
                             apiHandler.fetchJsonList(ApiHandler.UPDATE_RECYLERVIEW);
                             swipeRefreshLayout.setRefreshing(false);
                         }
+
+
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
