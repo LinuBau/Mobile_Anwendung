@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import com.example.testapi.Achievements.Achievement;
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.apistuff.FlaskApiService;
@@ -23,7 +25,6 @@ import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.dataobjects.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivitySafe {
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final long REFRESH_INTERVAL = 60000;
     public  static  boolean isLogtin=false;
-
+    private Achievement achievement;
     private final Runnable refreshRunnable = new Runnable() {
         @Override
         public void run() {
@@ -53,14 +54,16 @@ public class MainActivity extends AppCompatActivitySafe {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
             replaceFragment(new ListViewFragment());
         }
+
         tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.188.150:5000")
+                .baseUrl("http://192.168.178.76:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FlaskApiService apiService = retrofit.create(FlaskApiService.class);
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivitySafe {
         handler = new Handler(Looper.getMainLooper());
         userDataManager = new UserDataManager(getApplicationContext());
         MainActivity.userid  = userDataManager.getUserId();
-
+        achievement = Achievement.createInstance(this);
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
         setupTabs();
@@ -85,6 +88,17 @@ public class MainActivity extends AppCompatActivitySafe {
         startAutoRefresh();
 
     }
+
+
+    public void trackAchievements(String AchievementType) {
+
+        int currentProgress = userDataManager.getAchievementProgress(AchievementType);
+        currentProgress++;
+        userDataManager.saveAchievementProgress(AchievementType, currentProgress);
+        achievement.totalPosts(currentProgress);
+    }
+
+
     private void refreshData() {
         new Thread(new Runnable() {
             @Override

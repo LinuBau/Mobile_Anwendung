@@ -11,7 +11,7 @@
     </debug-overrides>
 
     <!-- Base configuration for all connections -->
-    <base-config cleartextTrafficPermitted="false">
+    <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <!-- Only trust system certificates in production -->
             <certificates src="system" />

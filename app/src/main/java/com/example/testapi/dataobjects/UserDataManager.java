@@ -28,14 +28,35 @@ public class UserDataManager {
             return sharedPreferences.getInt("userid", 0);
         }
         return 9999;
-
     }
-
-
 
     // Clear all user data
     public void clearUserData() {
         editor.clear();
+        editor.apply();
+    }
+
+    // Achievementskram
+    public void saveAchievementProgress(String achievementName, int progress) {
+        editor.putInt(achievementName, progress);
+        editor.apply();
+    }
+
+    public int getAchievementProgress(String achievementName) {
+            return sharedPreferences.getInt(achievementName, 0);
+    }
+
+    public void resetAchievementProgress(String achievementName) {
+        editor.remove(achievementName);
+        editor.apply();
+    }
+
+    public void clearAllAchievements() {
+        for (String key : sharedPreferences.getAll().keySet()) {
+            if (!key.equals("userid")) {
+                editor.remove(key);
+            }
+        }
         editor.apply();
     }
 }
