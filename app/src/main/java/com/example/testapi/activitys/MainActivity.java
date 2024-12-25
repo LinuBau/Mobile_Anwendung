@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import com.example.testapi.Achievements.Achievement;
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.apistuff.FlaskApiService;
@@ -24,7 +25,6 @@ import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.dataobjects.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivitySafe {
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final long REFRESH_INTERVAL = 60000;
     public  static  boolean isLogtin=false;
-
+    private Achievement achievement;
     private final Runnable refreshRunnable = new Runnable() {
         @Override
         public void run() {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivitySafe {
         handler = new Handler(Looper.getMainLooper());
         userDataManager = new UserDataManager(getApplicationContext());
         MainActivity.userid  = userDataManager.getUserId();
-
+        achievement = Achievement.createInstance(this);
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
         setupTabs();
@@ -87,28 +87,18 @@ public class MainActivity extends AppCompatActivitySafe {
         });
         startAutoRefresh();
 
-        trackAchievements();
     }
 
 
-    public void trackAchievements() {
-
-        String AchievementType = "TotalPosts";
-        int targetProgress = 1;
+    public void trackAchievements(String AchievementType) {
 
         int currentProgress = userDataManager.getAchievementProgress(AchievementType);
-
-
         currentProgress++;
         userDataManager.saveAchievementProgress(AchievementType, currentProgress);
-        // Log.d hat einfach nicht funktioniert wtf, aber das klappt fml ich hasse alles ich will sterben.
-        // Knapp ne Stunde debuggen weil ich dachte es liegt an mir was soll der scheiß android
-        if (currentProgress >= targetProgress) {
-            Toast.makeText(this, "trackAchievements() größer als target!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "trackAchievements() kleiner als target", Toast.LENGTH_SHORT).show();
-        }
+        achievement.totalPosts(currentProgress);
     }
+
+
     private void refreshData() {
         new Thread(new Runnable() {
             @Override

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.R;
+import com.example.testapi.dataobjects.UserDataManager;
 
 import java.util.ArrayList;
 
@@ -41,8 +42,7 @@ public class AddResourceFragment extends FragmentClickable {
     Spinner spinner1, spinner2;
     ArrayAdapter<String> adapter1, adapter2;
     ArrayList<String> items1, items2;
-
-
+    private UserDataManager userDataManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,7 +154,7 @@ public class AddResourceFragment extends FragmentClickable {
         }
         apiHandler.addJsonList(titel, Html.toHtml(beschreibung,Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE),extraData,userid,tagList);
 
-        parent.trackAchievements();
+        parent.trackAchievements("TotalPosts");
     }
     private  void  createApiHandler(){
         apiHandler = ((MainActivity) requireActivity()).getApiHandler();
