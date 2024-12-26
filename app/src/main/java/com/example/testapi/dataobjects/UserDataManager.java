@@ -41,9 +41,20 @@ public class UserDataManager {
         editor.putInt(achievementName, progress);
         editor.apply();
     }
+    public void saveAchievementProgress(String achievementName, long progress) {
+        editor.putLong(achievementName, progress);
+        editor.apply();
+    }
 
     public int getAchievementProgress(String achievementName) {
             return sharedPreferences.getInt(achievementName, 0);
+    }
+
+    public Long getAchievementProgress(String achievementName,boolean x) {
+        if (hasKey(achievementName)){
+            return sharedPreferences.getLong(achievementName, 0);
+        }
+        return  null;
     }
 
     public void resetAchievementProgress(String achievementName) {

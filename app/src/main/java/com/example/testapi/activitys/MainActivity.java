@@ -26,9 +26,12 @@ import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.dataobjects.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.util.ArrayList;
 import android.widget.Toast;
 import java.util.Calendar;
+
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivitySafe {
     private static final long REFRESH_INTERVAL = 60000;
     public  static  boolean isLogtin=false;
     private Achievement achievement;
+
+
+
+
     private final Runnable refreshRunnable = new Runnable() {
         @Override
         public void run() {
@@ -80,6 +87,8 @@ public class MainActivity extends AppCompatActivitySafe {
             replaceFragment(new ListViewFragment());
         }
 
+        AndroidThreeTen.init(this);
+
         tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
@@ -92,9 +101,10 @@ public class MainActivity extends AppCompatActivitySafe {
         handler = new Handler(Looper.getMainLooper());
         userDataManager = new UserDataManager(getApplicationContext());
         MainActivity.userid  = userDataManager.getUserId();
-        achievement = Achievement.createInstance(this);
+        achievement = Achievement.createInstance(this,userDataManager);
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
+        achievement.checkAndUpdateLastLogin();
         setupTabs();
 
 
@@ -146,6 +156,12 @@ public class MainActivity extends AppCompatActivitySafe {
                 }
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        achievement.checkAndUpdateLastLogin();
     }
 
     private void startAutoRefresh() {

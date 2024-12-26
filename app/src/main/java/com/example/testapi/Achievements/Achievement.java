@@ -6,16 +6,23 @@ import android.widget.Toast;
 
 import com.example.testapi.dataobjects.UserDataManager;
 
+import org.threeten.bp.Duration;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.LocalDate;
+
 public class Achievement {
 
     private UserDataManager userDataManager;
     private Context context;
 
-    private Achievement(Context context) {  // Konstruktor bleibt private
+    private Achievement(Context context,UserDataManager dataManager) {  // Konstruktor bleibt private
         this.context = context;
+        this.userDataManager = dataManager;
     }
-    public static Achievement createInstance(Context context) {
-        return new Achievement(context);
+    public static Achievement createInstance(Context context,UserDataManager dataManager) {
+        return new Achievement(context,dataManager);
     }
 
     public void totalPosts(int progress) {
@@ -66,6 +73,21 @@ public class Achievement {
                 userDataManager.resetAchievementProgress("Streak"); // Clear Cache
                 userDataManager.resetAchievementProgress("Date"); // Clear Cache
             }
+        }
+    }
+    public  void checkAndUpdateLastLogin(){
+        Long date = userDataManager.getAchievementProgress("Date",true);
+        long now = Instant.now().toEpochMilli();
+        if(date == null){
+            userDataManager.saveAchievementProgress("Date",Instant.now().toEpochMilli());
+            return;
+        }
+        LocalTime old_date = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalTime();
+        LocalTime new_date = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalTime();
+        if (Duration.between(old_date, new_date).toMinutes() >= 1) {
+            System.out.println("A minute has passed.");
+        } else {
+            System.out.println("Less than a minute has passed.");
         }
     }
 
