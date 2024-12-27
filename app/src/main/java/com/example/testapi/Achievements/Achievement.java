@@ -11,6 +11,7 @@ import org.threeten.bp.Instant;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
 
 public class Achievement {
 
@@ -78,17 +79,25 @@ public class Achievement {
     public  void checkAndUpdateLastLogin(){
         Long date = userDataManager.getAchievementProgress("Date",true);
         long now = Instant.now().toEpochMilli();
+        int streak = userDataManager.getAchievementProgress("Streak");
         if(date == null){
-            userDataManager.saveAchievementProgress("Date",Instant.now().toEpochMilli());
+            userDataManager.saveAchievementProgress("Date",now);
             return;
         }
-        LocalTime old_date = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalTime();
-        LocalTime new_date = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalTime();
-        if (Duration.between(old_date, new_date).toMinutes() >= 1) {
-            System.out.println("A minute has passed.");
+        LocalDate old_date = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate new_date = Instant.ofEpochMilli(now).atZone(ZoneId.systemDefault()).toLocalDate();
+        if ((ChronoUnit.DAYS.between(old_date,new_date) == 1)) {
+            System.out.println("A new day has started." + old_date.toString()+ "   "+ new_date.toString());
+            userDataManager.saveAchievementProgress("Date", now);
+            userDataManager.saveAchievementProgress("Streak",streak+1);
         } else {
-            System.out.println("Less than a minute has passed.");
+            if (ChronoUnit.DAYS.between(old_date,new_date) >= 2){
+                userDataManager.saveAchievementProgress("Streak",0);
+                userDataManager.saveAchievementProgress("Date",now);
+            }
+            System.out.println("Fick dich");
         }
+        dailyStreak();
     }
 
 
