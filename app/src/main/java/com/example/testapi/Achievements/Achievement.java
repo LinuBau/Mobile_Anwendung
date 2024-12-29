@@ -90,6 +90,7 @@ public class Achievement {
             System.out.println("A new day has started." + old_date.toString()+ "   "+ new_date.toString());
             userDataManager.saveAchievementProgress("Date", now);
             userDataManager.saveAchievementProgress("Streak",streak+1);
+            dailyStreak();
         } else {
             if (ChronoUnit.DAYS.between(old_date,new_date) >= 2){
                 userDataManager.saveAchievementProgress("Streak",0);
@@ -97,7 +98,6 @@ public class Achievement {
             }
             System.out.println("Fick dich");
         }
-        dailyStreak();
     }
 
 
