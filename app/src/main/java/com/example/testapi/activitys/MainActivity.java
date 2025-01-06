@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivitySafe {
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.188.150:5000")
+                .baseUrl("http://192.168.178.76:5000")
 
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
