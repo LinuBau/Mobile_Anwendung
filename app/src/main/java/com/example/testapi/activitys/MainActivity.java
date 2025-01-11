@@ -1,6 +1,7 @@
 package com.example.testapi.activitys;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
+import java.util.Date;
 import com.example.testapi.Achievements.Achievement;
 import com.example.testapi.R;
 import com.example.testapi.apistuff.ApiHandler;
@@ -25,7 +26,12 @@ import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.dataobjects.UserDataManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.util.ArrayList;
+import android.widget.Toast;
+import java.util.Calendar;
+
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,13 +48,35 @@ public class MainActivity extends AppCompatActivitySafe {
     private static final long REFRESH_INTERVAL = 60000;
     public  static  boolean isLogtin=false;
     private Achievement achievement;
+
+
+
+
     private final Runnable refreshRunnable = new Runnable() {
         @Override
         public void run() {
             refreshData();
             handler.postDelayed(this, REFRESH_INTERVAL);
+
         }
     };
+
+
+    // ------------------------------------------------------------------------------------------------------
+    private Context context;
+    public void currentDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int minutes = calendar.get(Calendar.MINUTE);
+
+        achievement.Date2Integer(year, month, day, minutes);
+        Toast.makeText(context, "Streaklänge ", Toast.LENGTH_SHORT).show(); // zum debuggen
+    }
+    // -------------------------------------------------------------------------------------------------------
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,11 +87,14 @@ public class MainActivity extends AppCompatActivitySafe {
             replaceFragment(new ListViewFragment());
         }
 
+        AndroidThreeTen.init(this);
+
         tabLayout = findViewById(R.id.bottom_navigation);
         swipeRefreshLayout = findViewById(R.id.swipeToUpdate);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.178.76:5000")
+
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FlaskApiService apiService = retrofit.create(FlaskApiService.class);
@@ -71,9 +102,10 @@ public class MainActivity extends AppCompatActivitySafe {
         handler = new Handler(Looper.getMainLooper());
         userDataManager = new UserDataManager(getApplicationContext());
         MainActivity.userid  = userDataManager.getUserId();
-        achievement = Achievement.createInstance(this);
+        achievement = Achievement.createInstance(this,userDataManager);
         apiHandler = new ApiHandler(this,apiService);
         apiHandler.setOrValidUserId();
+        achievement.checkAndUpdateLastLogin();
         setupTabs();
 
 
@@ -110,6 +142,8 @@ public class MainActivity extends AppCompatActivitySafe {
                             apiHandler.fetchJsonList(ApiHandler.UPDATE_RECYLERVIEW);
                             swipeRefreshLayout.setRefreshing(false);
                         }
+
+
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -123,6 +157,12 @@ public class MainActivity extends AppCompatActivitySafe {
                 }
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        achievement.checkAndUpdateLastLogin();
     }
 
     private void startAutoRefresh() {
