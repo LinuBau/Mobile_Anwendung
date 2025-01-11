@@ -40,4 +40,6 @@ dependencies {
     androidTestImplementation libs.espresso.core
     implementation libs.circleimageview
     implementation libs.threetenabp
+    implementation libs.taptargetview
+
 }

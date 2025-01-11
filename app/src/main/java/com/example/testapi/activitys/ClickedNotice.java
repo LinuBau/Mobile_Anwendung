@@ -14,11 +14,14 @@ import androidx.annotation.NonNull;
 
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
+import com.example.testapi.onboarding.Onboarding;
 
 public class ClickedNotice extends FragmentClickable {
     MainActivity parent;
-    TextView titel, inhalt,kontaktflied;
-    Button messageButton;
+    public TextView titel;
+    public TextView inhalt;
+    TextView kontaktflied;
+    public Button messageButton;
     View view;
     Notice receivedNotice;
     @Override
@@ -61,6 +64,9 @@ public class ClickedNotice extends FragmentClickable {
                 parent.replaceFragment(new LoginFragment(),MainActivity.notices.indexOf(receivedNotice),true);
             });
         }
+
+        Onboarding o = new Onboarding(parent,parent.getUserDataManager());
+        o.showOnboarding(this);
         return view;
     }
 }

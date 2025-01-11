@@ -1,6 +1,5 @@
 package com.example.testapi.activitys;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +16,7 @@ import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.layoutuse.NoticeListAdaptar;
+import com.example.testapi.onboarding.Onboarding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -25,12 +24,14 @@ import java.util.Arrays;
 
 public class ListViewFragment extends FragmentClickable {
     private ApiHandler apiHandler;
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     public static ArrayList<Integer> userTags;
+    public  Button loginButton;
     private View view;
+    public FloatingActionButton addButton;
     private MainActivity parent;
     public  static  ArrayList<String> tagSortingLabel;
-    private Spinner fristSpinner;
+    public Spinner fristSpinner;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView( inflater,container,savedInstanceState);
@@ -49,15 +50,12 @@ public class ListViewFragment extends FragmentClickable {
         apiHandler.fetchJsonList(ApiHandler.CREATE_RECYLERVIEW);
 
         // Button Setup
-        FloatingActionButton button = view.findViewById(R.id.plusButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                parent.replaceFragment(new AddResourceFragment(),true);
-            }
+        addButton = view.findViewById(R.id.plusButton);
+        addButton.setOnClickListener(View -> {
+            parent.replaceFragment(new AddResourceFragment(),true);
         });
         setUpDropdownMenu();
-        Button loginButton = view.findViewById(R.id.start_login);
+        loginButton = view.findViewById(R.id.start_login);
         if (!MainActivity.isLogtin) {
             loginButton.setVisibility(View.VISIBLE);
             loginButton.setOnClickListener(View -> {
@@ -68,6 +66,8 @@ public class ListViewFragment extends FragmentClickable {
         } else {
             loginButton.setVisibility(View.GONE);
         }
+        Onboarding onboarding = new Onboarding(parent,parent.getUserDataManager());
+        onboarding.showOnboarding(this);
 
         return view;
     }

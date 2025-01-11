@@ -22,12 +22,17 @@ public class UserDataManager {
         editor.apply();
     }
 
+    public void saveBoolean(String key,Boolean bool){
+        editor.putBoolean(key,bool);
+        editor.apply();
+    }
+    public  Boolean getBoolean(String key){
+        return sharedPreferences.getBoolean(key,true);
+    }
+
     // Get user data
     public int getUserId() {
-        if (hasKey("userid")){
-            return sharedPreferences.getInt("userid", 0);
-        }
-        return 9999;
+        return sharedPreferences.getInt("userid", 9999);
     }
 
     // Clear all user data

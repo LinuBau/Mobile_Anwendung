@@ -96,7 +96,6 @@ public class Achievement {
                 userDataManager.saveAchievementProgress("Streak",0);
                 userDataManager.saveAchievementProgress("Date",now);
             }
-            System.out.println("Fick dich");
         }
     }
 

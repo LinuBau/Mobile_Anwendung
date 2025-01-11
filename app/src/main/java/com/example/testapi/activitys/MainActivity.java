@@ -37,7 +37,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivitySafe {
-    private BottomNavigationView tabLayout;
+    public BottomNavigationView tabLayout;
     public  static  ArrayList<Integer> chatsKeys;
     public static int userid = 9999;
     private ApiHandler apiHandler = null;
@@ -242,9 +242,14 @@ public class MainActivity extends AppCompatActivitySafe {
                 return true;
             }
         });
+
     }
     public  void setNavigationBarTab(int id){
         tabLayout.setSelectedItemId(id);
+    }
+
+    public  UserDataManager getUserDataManager(){
+        return  userDataManager;
     }
 
     @Override

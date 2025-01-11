@@ -24,22 +24,24 @@ import android.widget.Toast;
 import com.example.testapi.apistuff.ApiHandler;
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.UserDataManager;
+import com.example.testapi.onboarding.Onboarding;
 
 import java.util.ArrayList;
 
 public class AddResourceFragment extends FragmentClickable {
     private ApiHandler apiHandler = null;
     View view;
-    private Button boldButton;
-    private EditText flied1;
-    private EditText flied2;
-    private  EditText contactFlied;
-    private  boolean  isBold = false;
-    private RelativeSizeSpan span;
-    private SpannableString spannable;
-    private int previousTextLength = 0;
+    public  Button endbutton;
+    public Button boldButton;
+    public EditText flied1;
+    public EditText flied2;
+    public  EditText contactFlied;
+    public  boolean  isBold = false;
+    public RelativeSizeSpan span;
+    public SpannableString spannable;
+    public int previousTextLength = 0;
     MainActivity parent ;
-    Spinner spinner1, spinner2;
+    public Spinner spinner1, spinner2;
     ArrayAdapter<String> adapter1, adapter2;
     ArrayList<String> items1, items2;
     private UserDataManager userDataManager;
@@ -49,13 +51,13 @@ public class AddResourceFragment extends FragmentClickable {
         super.onCreateView( inflater,container,savedInstanceState);
         parent = (MainActivity) requireActivity();
         view = inflater.inflate(R.layout.add_eintrag_screen, container, false);
-        Button button = view.findViewById(R.id.addButton);
+        endbutton = view.findViewById(R.id.addButton);
         flied1 = view.findViewById(R.id.textField1);
         flied2 = view.findViewById(R.id.textField2);
         contactFlied = view.findViewById(R.id.contactField);
         boldButton = view.findViewById(R.id.boldText);
         createApiHandler();
-        button.setOnClickListener(new View.OnClickListener() {
+        endbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             if(flied1.getText().toString().isEmpty()||flied2.getText().toString().isEmpty()){
@@ -135,6 +137,10 @@ public class AddResourceFragment extends FragmentClickable {
             }
         });
         setUpSpinners();
+
+
+        Onboarding o = new Onboarding(parent,parent.getUserDataManager());
+        o.showOnboarding(this);
         return  view;
     }
 
