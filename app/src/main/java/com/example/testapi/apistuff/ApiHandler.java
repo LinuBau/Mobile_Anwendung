@@ -23,6 +23,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ *  Is used make all Api to the Flask Server use FlaskSvervice for all exiting Api ending on the FlaskSever
+ */
 public class ApiHandler  {
     private MainActivity parent;
     private  FlaskApiService apiService;

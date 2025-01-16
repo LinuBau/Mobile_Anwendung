@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+/**
+ *  Is the Class that is used for all private Massaggies that are send. So Massagies can be send and ressivt by the API
+ */
 public class Message implements Parcelable {
     private int sender;
     private int receiver;

@@ -11,6 +11,10 @@ import java.util.Objects;
 
 import kotlin.Pair;
 
+/**
+ * Main Object in this App is used in the List in ListViewFragment and is used to ressive and send Messagies to the Api
+ * Implements Parcelable so it can be given to the Fragemrnt
+ */
 public class Notice implements Parcelable {
     private String AnzeigeName;
     private String Beschreibung;

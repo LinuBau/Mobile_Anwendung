@@ -12,7 +12,9 @@ import retrofit2.http.Path;
 
 import java.util.List;
 
-
+/**
+ * Implemts all API Calls form the Flask Server is used in the API HAndler
+ */
 public interface FlaskApiService {
     @GET("/json")
     Call<List<Notice>> getJsonList();

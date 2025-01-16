@@ -16,6 +16,9 @@ import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 import com.example.testapi.onboarding.Onboarding;
 
+/**
+ * Ist das Fragment das die Notice Fullscreen zeigt und halt Felder geheim  wenn dieser Nutzer nicht eingelogt ist.
+ */
 public class ClickedNotice extends FragmentClickable {
     MainActivity parent;
     public TextView titel;
