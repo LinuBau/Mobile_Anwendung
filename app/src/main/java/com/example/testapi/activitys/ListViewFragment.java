@@ -22,6 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * ListViewFragment zeigt die Elemente im Homescreen (Posts) in Listenform an.
+ */
 public class ListViewFragment extends FragmentClickable {
     private ApiHandler apiHandler;
     public RecyclerView recyclerView;

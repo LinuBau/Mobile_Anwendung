@@ -11,6 +11,9 @@ import android.widget.EditText;
 import com.example.testapi.R;
 import com.example.testapi.dataobjects.Notice;
 
+/**
+ * LoginFragment enspricht dem Login Fenster in der App
+ */
 public class LoginFragment extends  FragmentClickable{
     private   View view;
     private  MainActivity parent;

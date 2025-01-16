@@ -28,6 +28,9 @@ import com.example.testapi.onboarding.Onboarding;
 
 import java.util.ArrayList;
 
+/**
+ * Erlaubt das Hinzufügen von Notices
+ */
 public class AddResourceFragment extends FragmentClickable {
     private ApiHandler apiHandler = null;
     View view;
