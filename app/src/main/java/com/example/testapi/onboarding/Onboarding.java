@@ -31,27 +31,27 @@ public class Onboarding {
         View tab = parent.tabLayout.findViewById(R.id.navigation_message);
         TapTargetSequence sequence = new TapTargetSequence(parent)
                 .targets(
-                        TapTarget.forView(fragment.addButton, "Hinzufügen", "Tippe hier, um ein neues Element hinzuzufügen.")
+                        TapTarget.forView(fragment.addButton, "Hinzufügen", "Tippe hier, um ein neuen Post zu erstellen.")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
                                 .cancelable(true),
-                        TapTarget.forView(fragment.recyclerView, "Elementliste", "Hier werden die verfügbaren Elemente angezeigt.")
+                        TapTarget.forView(fragment.recyclerView, "Elementliste", "Hier werden alle Posts angezeigt.")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
                                 .cancelable(true),
-                        TapTarget.forView(fragment.fristSpinner, "Filter", "Verwende dieses Dropdown-Menü, um Elemente zu filtern.")
+                        TapTarget.forView(fragment.fristSpinner, "Filter", "Verwende dieses Dropdown-Menü um nach Kategorien zu filtern.")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
                                 .cancelable(true),
-                        TapTarget.forView(tab,"Message","Hier kannst du deine dierct Nachrichten sehen")
+                        TapTarget.forView(tab,"Message","Hier findest du alle deine Chats")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
                                 .cancelable(true),
-                        TapTarget.forView(fragment.loginButton,"Login","Hier kannst du dich einloggen")
+                        TapTarget.forView(fragment.loginButton,"Login","Log dich hier ein, um Chats schreiben zu können")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
@@ -60,7 +60,7 @@ public class Onboarding {
                 .listener(new TapTargetSequence.Listener() {
                     @Override
                     public void onSequenceFinish() {
-                        Toast.makeText(parent, "Onboarding abgeschlossen!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(parent, "Onboarding - Home: beendet!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -70,7 +70,7 @@ public class Onboarding {
 
                     @Override
                     public void onSequenceCanceled(TapTarget lastTarget) {
-                        Toast.makeText(parent, "Onboarding abgebrochen!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(parent, "Onboarding - Home: abgebrochen!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -86,12 +86,12 @@ public class Onboarding {
         }
         TapTargetSequence sequence = new TapTargetSequence(parent)
                 .targets(
-                        TapTarget.forView(fragment.titel, "Beitragstitel", "Dies ist der Titel des ausgewählten Beitrags.")
+                        TapTarget.forView(fragment.titel, "Beitragstitel", "Das ist der Titel des Posts.")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
                                 .cancelable(false),
-                        TapTarget.forView(fragment.inhalt, "Beschreibung", "Hier findest du weitere Details zu diesem Beitrag.")
+                        TapTarget.forView(fragment.inhalt, "Beschreibung", "Hier findest du weitere Details zu diesem Post.")
                                 .outerCircleColor(R.color.md_theme_tertiary)
                                 .targetCircleColor(android.R.color.white)
                                 .transparentTarget(true)
@@ -101,7 +101,7 @@ public class Onboarding {
         // Zusätzliche Ziele abhängig vom Status
         if (MainActivity.isLogtin) {
             sequence.target(
-                    TapTarget.forView(fragment.messageButton, "Nachricht senden", "Tippe hier, um den Ersteller des Beitrags zu kontaktieren.")
+                    TapTarget.forView(fragment.messageButton, "Nachricht senden", "Tippe hier, um den Ersteller des Beitrags zu kontaktieren. Merke: Du musst dafür eingeloggt sein!")
                             .outerCircleColor(R.color.md_theme_tertiary)
                             .targetCircleColor(android.R.color.white)
                             .transparentTarget(true)
@@ -109,7 +109,7 @@ public class Onboarding {
             );
         } else {
             sequence.target(
-                    TapTarget.forView(parent.findViewById(R.id.login_button), "Login", "Melde dich an, um weitere Aktionen durchzuführen.")
+                    TapTarget.forView(parent.findViewById(R.id.login_button), "Login", "Melde dich an, um weitere Aktionen, wie Chats nutzen zu können.")
                             .outerCircleColor(R.color.md_theme_tertiary)
                             .targetCircleColor(android.R.color.white)
                             .transparentTarget(true)
@@ -119,7 +119,7 @@ public class Onboarding {
         sequence.listener(new TapTargetSequence.Listener() {
             @Override
             public void onSequenceFinish() {
-                Toast.makeText(parent, "Onboarding abgeschlossen!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent, "Onboarding - Posts: abgeschlossen!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -129,7 +129,7 @@ public class Onboarding {
 
             @Override
             public void onSequenceCanceled(TapTarget lastTarget) {
-                Toast.makeText(parent, "Onboarding abgebrochen!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent, "Onboarding - Posts: abgebrochen!", Toast.LENGTH_SHORT).show();
             }
         });
         sequence.start();
@@ -143,17 +143,17 @@ public class Onboarding {
             return;
         }
         TapTargetSequence sequence = new TapTargetSequence(parent).targets(
-                TapTarget.forView(fragment.endbutton, "Füge einen Eintrag hinzu", "Drücke hier, um einen neuen Eintrag hinzuzufügen.")
+                TapTarget.forView(fragment.endbutton, "Füge einen Post hinzu", "Drücke hier, um einen neuen Post hinzuzufügen.")
                         .outerCircleColor(R.color.md_theme_tertiary)
                         .targetCircleColor(android.R.color.white)
                         .transparentTarget(true)
                         .cancelable(false),
-                TapTarget.forView(fragment.flied1, "Titel eingeben", "Hier gibst du den Titel für deinen Eintrag ein.")
+                TapTarget.forView(fragment.flied1, "Titel eingeben", "Hier gibst du den Titel für deinen Post ein.")
                         .outerCircleColor(R.color.md_theme_tertiary)
                         .targetCircleColor(android.R.color.white)
                         .transparentTarget(true)
                         .cancelable(false),
-                TapTarget.forView(fragment.spinner1, "Kategorie wählen", "Wähle eine Kategorie aus, um deinen Eintrag zu sortieren.")
+                TapTarget.forView(fragment.spinner1, "Kategorie wählen", "Wähle eine Kategorie aus, um deinen Post einzusortieren.")
                         .outerCircleColor(R.color.md_theme_tertiary)
                         .targetCircleColor(android.R.color.white)
                         .transparentTarget(true)
