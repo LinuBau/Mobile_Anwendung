@@ -12,6 +12,12 @@ import com.example.testapi.dataobjects.UserDataManager;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 
+
+/**
+ * Diese Klasse ist für das Onboarding beim erstmaligem Start der App verantwortlich.
+ * Diese Klasse zeigt den Nutzern, wie die App funktioniert
+ * und erkärt diese ebenfalls die Funktionen der App.
+ */
 public class Onboarding {
     private  MainActivity parent;
     private UserDataManager dataManager;

@@ -36,6 +36,10 @@ import java.util.Calendar;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * MainActivity ist die main Klasse der Anwendung. Diese Klasse wird bei Appstart gestartet und
+ * ist für die Funktion der gesamten App notwendig
+ */
 public class MainActivity extends AppCompatActivitySafe {
     public BottomNavigationView tabLayout;
     public  static  ArrayList<Integer> chatsKeys;

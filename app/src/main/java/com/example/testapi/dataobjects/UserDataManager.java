@@ -4,6 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+/**
+ * Der UserDataManager ist für die Handhabung des Caches der App verantwortlich.
+ * Dieser kann Datentypen als Array im Cache speichern, aufrufen und löschen.
+ * Die Nutzende können den Cache manuell in den Android-App-Settings löschen.
+ * Dies setzt dann auch die Achievements zurück.
+ */
 public class UserDataManager {
     private static final String PREF_NAME = "UserPrefs";
     private SharedPreferences sharedPreferences;

@@ -13,6 +13,12 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.temporal.ChronoUnit;
 
+/**
+* Diese Klasse ist für die Handhabung aller Achievements zuständig.
+* Hier stehen alle möglichen Achievements als Methoden drin und werden hier getrackt.
+* Der Status der Achievements wird über den UserDataManager lokal auf dem Smartphone im
+* Cache gespeichert.
+* */
 public class Achievement {
 
     private UserDataManager userDataManager;

@@ -15,6 +15,9 @@ import com.example.testapi.apistuff.ApiHandler;
 
 import java.util.ArrayList;
 
+/**
+ * Zeigt Chats als Liste an
+ */
 public class ChatListFragment extends  FragmentClickable{
     ApiHandler apiHandler ;
     View view;

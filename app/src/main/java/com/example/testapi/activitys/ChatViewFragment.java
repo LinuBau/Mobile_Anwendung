@@ -21,6 +21,10 @@ import com.example.testapi.layoutuse.MessageListApdatar;
 
 import java.util.ArrayList;
 
+/**
+ * Der ChatViewFragment erlaubt das Ansehen des Chats, wie man es aus beispielsweise
+ * WhatsApp gewohnt ist. Der Chat wird jede Sekunde geupdated.
+ */
 public class ChatViewFragment extends FragmentClickable{
     private ArrayList<Message> chat;
     private  int thisChat;
