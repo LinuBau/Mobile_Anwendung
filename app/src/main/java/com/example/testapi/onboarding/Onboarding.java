@@ -115,7 +115,7 @@ public class Onboarding {
             );
         } else {
             sequence.target(
-                    TapTarget.forView(parent.findViewById(R.id.login_button), "Login", "Melde dich an, um weitere Aktionen, wie Chats nutzen zu können.")
+                    TapTarget.forView(fragment.loginButton, "Login", "Melde dich an, um weitere Aktionen, wie Chats nutzen zu können.")
                             .outerCircleColor(R.color.md_theme_tertiary)
                             .targetCircleColor(android.R.color.white)
                             .transparentTarget(true)

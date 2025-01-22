@@ -23,8 +23,9 @@ public class ClickedNotice extends FragmentClickable {
     MainActivity parent;
     public TextView titel;
     public TextView inhalt;
-    TextView kontaktflied;
+    public Button loginButton;
     public Button messageButton;
+    TextView kontaktflied;
     View view;
     Notice receivedNotice;
     @Override
@@ -68,8 +69,8 @@ public class ClickedNotice extends FragmentClickable {
             });
         }
 
-        Onboarding o = new Onboarding(parent,parent.getUserDataManager());
-        o.showOnboarding(this);
+        //Onboarding o = new Onboarding(parent,parent.getUserDataManager());
+        //o.showOnboarding(this);
         return view;
     }
 }
