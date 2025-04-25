@@ -7,7 +7,7 @@ Unsere Lösung: ein digitales Schwarzes Brett mit dem Codenamen "Arial Weiß".
 ## Funktionsweise
 
 Die App kommuniziert über eine Schnittstelle mit einem selbst entwickelten Server.
-Weitere Erkenntnisse
+## Weitere Erkenntnisse
 
 Neben der technischen Entwicklung haben wir auch die Zielgruppenansprache verbessert – unter anderem durch ein Werbeplakat.
 Der Server, mit dem die App kommuniziert, wurde mit Flask realisiert.
